@@ -8,7 +8,7 @@
     <artifactId>OperationSheduler</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <maven.compiler.target>7</maven.compiler.target>
+        <maven.compiler.target>19</maven.compiler.target>
     </properties>
 
 
