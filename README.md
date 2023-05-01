@@ -1,3 +1,4 @@
-# Operation_Scheduler
+# Operation Scheduler Project
 ___
-Operation Scheduler project. Team Project for IC10039 Introduction to Data Structures and Algorithms Course.
+This is a team project for the Data Structures abd Algorithms Course at the International College of Dundee.\
+Authors: Khushaal Choithramani, Huzaifa Ijaz, Viktor Bratov.
