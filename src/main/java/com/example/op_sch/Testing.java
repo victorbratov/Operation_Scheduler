@@ -1,4 +1,4 @@
-package org.example;
+package com.example.op_sch;
 
 import java.util.Date;
 
