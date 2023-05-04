@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Operation_Scheduler" />
+        <module name="OP_SCH" />
         <module name="OperationSheduler" />
       </profile>
     </annotationProcessing>

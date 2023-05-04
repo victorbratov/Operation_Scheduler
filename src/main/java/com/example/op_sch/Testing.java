@@ -7,7 +7,6 @@ public class Testing {
     public static void main(String[] args) {
         MedicalRecord medicalRecord1 = new MedicalRecord("Malaria");
         Patient patient1 = new Patient("XYZ", 13 , "Male" , medicalRecord1);
-
         System.out.println(patient1.getId());
 
         MedicalRecord medicalRecord2 = new MedicalRecord("Malaria");

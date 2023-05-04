@@ -9,8 +9,8 @@ public class Main {
 
 
     public static void main(String[] args){
-        Doctor doc1 = new Doctor("Brown", "Eye doctor");
-        Doctor doc2 = new Doctor("Green", "Leg doctor");
+        Worker doc1 = new Worker("Brown", "Eye doctor");
+        Worker doc2 = new Worker("Green", "Leg doctor");
 
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -29,7 +29,7 @@ public class Main {
         }
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List < Doctor > students = session.createQuery("from Doctor ", Doctor.class).list();
+            List < Worker > students = session.createQuery("from Worker ", Worker.class).list();
             students.forEach(System.out::println);
         } catch (Exception e) {
             if (transaction != null) {
