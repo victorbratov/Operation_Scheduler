@@ -23,11 +23,7 @@ public class EntryPoint extends Application {
         var manager = factory.newScreenManager(WIDTH, LENGTH);
         var root = manager.root();
         var scene = new Scene(root, WIDTH, LENGTH);
-        try{
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("com/example/op_sch/Styles.css")).toExternalForm());
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("Styles.css")).toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
