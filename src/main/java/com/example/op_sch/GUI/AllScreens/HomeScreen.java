@@ -1,18 +1,23 @@
 package com.example.op_sch.GUI.AllScreens;
 
+import com.example.op_sch.EntryPoint;
 import com.example.op_sch.GUI.Screen;
-import com.example.op_sch.Main;
-import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class HomeScreen implements Screen {
     private Node root;
+    private Runnable goToLogin;
+
+    public HomeScreen(Runnable goToLogin) {
+        this.goToLogin = goToLogin;
+    }
 
     @Override
     public String id() {
@@ -26,11 +31,13 @@ public class HomeScreen implements Screen {
 
     @Override
     public void init(){
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("homescreen.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(EntryPoint.class.getResource("homescreen.fxml"));
         try {
             root = fxmlLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Button login_button = (Button) root.lookup("login_button");
+        login_button.setOnAction(e -> goToLogin.run());
     }
 }
