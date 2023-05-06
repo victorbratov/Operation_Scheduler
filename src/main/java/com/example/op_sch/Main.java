@@ -9,33 +9,11 @@ public class Main {
 
 
     public static void main(String[] args){
-        Doctor doc1 = new Doctor("Brown", "Eye doctor");
-        Doctor doc2 = new Doctor("Green", "Leg doctor");
+        Worker operator = new Worker();
+        Worker doc1 = new Worker("khushaal", "testing");
 
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // start a transaction
-            transaction = session.beginTransaction();
-            // save the student objects
-            session.persist(doc1);
-            session.persist(doc2);
-            // commit transaction
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
+        operator.postWorkerToBackend(doc1);
+        System.out.println(operator.getWorkersFromBackend());
 
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List < Doctor > students = session.createQuery("from Doctor ", Doctor.class).list();
-            students.forEach(System.out::println);
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
     }
 }

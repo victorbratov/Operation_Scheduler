@@ -1,8 +1,28 @@
 package com.example.op_sch;
 
-import java.util.Date;
+import jakarta.persistence.*;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.jdbc.Work;
+
+import java.util.*;
+
+
+@Entity
+@Table(name = "professionals")
 
 public class Worker {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private int id;
+
+    @Column(name = "NAME")
+    private String name;
+
+    @Column(name = "POSITION")
+    private String position;
 
     public Worker() {
     }
@@ -12,10 +32,8 @@ public class Worker {
         this.position = position;
     }
 
-    private String name;
-    private String position;
 
-    private int id;
+
 
     public String getName() {
         return name;
@@ -49,18 +67,66 @@ public class Worker {
     }
 
     public void createAppointment(Date startTime, Date endTime ,Patient patient){
-
     }
+
     public void getPatientAppointmentInfo(int appointmentId){
-
-
 
     }
 
     public void deleteAppointment(int appointmentId){
 
     }
+    public Set getWorkersFromBackend(){
+        Set<Worker> workerSet = new HashSet<>();
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            List< Worker > students = session.createQuery("from Worker ", Worker.class).list();
+            students.forEach(student ->{
+                workerSet.add(student);
+            });
+            System.out.println( "Worker Size : " + workerSet.size());
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return workerSet;
+    }
+
+    public void postWorkerToBackend(Worker worker){
+
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start a transaction
+            transaction = session.beginTransaction();
+            // save the student objects
+            session.persist(worker);
+            // commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        Worker worker = new Worker();
+
+        System.out.println(worker.getWorkersFromBackend());
 
 
+    }
 
+
+    @Override
+    public String toString() {
+        return "Worker{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", position='" + position + '\'' +
+                '}';
+    }
 }

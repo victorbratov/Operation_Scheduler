@@ -3,6 +3,7 @@ package com.example.op_sch;
 public class MedicalRecord {
 
     private String record;
+    private int id;
 
     public MedicalRecord(String record) {
         this.record = record;

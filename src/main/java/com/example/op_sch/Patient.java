@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Patient {
      private String name; // patient's name
      private int age; // patient's age
-     private int id = 0 ; // id assigned to the patient
+     private int id; // id assigned to the patient
      private String gender; // can be transformed into an Enum
 
      public int getId() {
@@ -16,7 +16,6 @@ public class Patient {
 
      public Patient(String name, int age, String gender , MedicalRecord medicalRecord) {
           patientMedicalRecords = new ArrayList<MedicalRecord>();
-          id ++;
           this.name = name;
           this.age = age;
           this.gender = gender;
