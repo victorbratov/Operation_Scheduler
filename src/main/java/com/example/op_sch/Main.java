@@ -1,10 +1,5 @@
 package com.example.op_sch;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
-import java.util.List;
-
 public class Main {
 
 

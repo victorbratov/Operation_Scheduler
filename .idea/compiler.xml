@@ -9,6 +9,7 @@
         <module name="Operation_Scheduler" />
         <module name="OP_SCH" />
         <module name="OperationSheduler" />
+        <module name="Operation_Scheduler_project" />
       </profile>
     </annotationProcessing>
   </component>
