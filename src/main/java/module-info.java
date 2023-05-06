@@ -6,8 +6,9 @@ module com.example.op_sch {
     requires java.naming;
 
 
-    opens com.example.op_sch to javafx.fxml, org.hibernate.orm.core;
+    opens com.example.op_sch to javafx.fxml, org.hibernate.orm.core, javafx.graphics;
     exports com.example.op_sch;
     exports com.example.op_sch.GUI.AllScreens;
+    exports com.example.op_sch.GUI.EntryPoint;
     opens com.example.op_sch.GUI.AllScreens to javafx.fxml, org.hibernate.orm.core;
 }

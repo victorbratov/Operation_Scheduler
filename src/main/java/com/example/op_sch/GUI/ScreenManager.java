@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,10 +47,11 @@ public class ScreenManager {
         currentScreen = screens.stream()
                 .filter(s -> s.id().equals(id)).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Screen with ID\"" + id + "\" is not registered"));
+        currentScreen.init();
         transition.playFromStart();
     }
 
     public Screen getCurrentScreen(){return currentScreen;}
 
-    public Node getRoot(){return root;}
+    public StackPane root(){return root;}
 }
