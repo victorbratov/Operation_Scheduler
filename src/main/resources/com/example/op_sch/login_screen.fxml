@@ -6,12 +6,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.op_sch.GUI.AllScreens.LoginScreen">
-   <children>
-      <TextField layoutX="220.0" layoutY="128.0" />
-      <TextField layoutX="220.0" layoutY="211.0" />
-      <Label layoutX="285.0" layoutY="97.0" text="Login" />
-      <Label layoutX="273.0" layoutY="183.0" text="Password" />
-      <Button layoutX="273.0" layoutY="271.0" mnemonicParsing="false" text="Sign in" />
-   </children>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.op_sch.GUI.AllScreens.LoginScreen">
+   <TextField layoutX="220.0" layoutY="128.0"/>
+   <TextField layoutX="220.0" layoutY="211.0"/>
+   <Label layoutX="285.0" layoutY="97.0" text="Login"/>
+   <Label layoutX="273.0" layoutY="183.0" text="Password"/>
+   <Button layoutX="273.0" layoutY="271.0" mnemonicParsing="false" text="Sign in"/>
 </AnchorPane>
