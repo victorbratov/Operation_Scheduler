@@ -27,14 +27,12 @@ public class ScreenManager {
 
     private void init(){
         root = new StackPane();
-
         transition = new FadeTransition(dur);
         transition.setNode(root);
         transition.setFromValue(1);
         transition.setToValue(0);
         transition.setAutoReverse(true);
         transition.setCycleCount(2);
-
         transition.currentTimeProperty().addListener((observable, oldVal, newVal)->{
             if(transition.getNode().getOpacity()<0.01){
                 root.getChildren().clear();
