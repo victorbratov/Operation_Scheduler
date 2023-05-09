@@ -11,4 +11,8 @@ public class HomeScreenController {
     void goToLogin(){
         EntryPoint.manager().goTo("LOGIN_SCREEN");
     }
+    @FXML
+    void goToRegister(){
+        EntryPoint.manager().goTo("REGISTER_SCREEN");
+    }
 }

@@ -4,14 +4,20 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.op_sch.GUI.AllScreens.LoginScreen">
+<AnchorPane prefHeight="749.0" prefWidth="1311.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.op_sch.LoginController">
    <children>
-      <TextField layoutX="220.0" layoutY="128.0" />
-      <TextField layoutX="220.0" layoutY="211.0" />
-      <Label layoutX="285.0" layoutY="97.0" text="Login" />
-      <Label layoutX="273.0" layoutY="183.0" text="Password" />
-      <Button layoutX="273.0" layoutY="271.0" mnemonicParsing="false" text="Sign in" />
+      <TextField fx:id="name" layoutX="564.0" layoutY="306.0" prefHeight="25.0" prefWidth="184.0" />
+      <TextField layoutX="564.0" layoutY="392.0" prefHeight="25.0" prefWidth="184.0" />
+      <Label layoutX="640.0" layoutY="275.0" text="Login" />
+      <Label layoutX="628.0" layoutY="361.0" text="Password" />
+      <Button layoutX="571.0" layoutY="450.0" mnemonicParsing="false" onAction="#printName" prefHeight="39.0" prefWidth="169.0" text="Sign in" />
+      <Label fx:id="response" alignment="CENTER" layoutX="465.0" layoutY="598.0" prefHeight="25.0" prefWidth="382.0">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </Label>
+      <Button layoutX="571.0" layoutY="502.0" mnemonicParsing="false" onAction="#goToRegisterScreen" prefHeight="39.0" prefWidth="169.0" text="New here? Register" />
    </children>
 </AnchorPane>
