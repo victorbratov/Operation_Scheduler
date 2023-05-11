@@ -95,7 +95,6 @@ public class Worker {
     }
 
     public void postWorkerToBackend(Worker worker){
-
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start a transaction
