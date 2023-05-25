@@ -19,6 +19,6 @@
             <Font name="System Bold" size="26.0" />
          </font>
       </Label>
-      <Button layoutX="571.0" layoutY="502.0" mnemonicParsing="false" onAction="#goToRegisterScreen" prefHeight="39.0" prefWidth="169.0" text="New here? Register" />
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" prefHeight="31.0" prefWidth="81.0" text="Back" />
    </children>
 </AnchorPane>

@@ -95,7 +95,6 @@ public class Worker {
     }
 
     public void postWorkerToBackend(Worker worker){
-
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start a transaction
@@ -113,11 +112,9 @@ public class Worker {
     }
 
     public static void main(String[] args) {
-        Worker worker = new Worker();
-
-        System.out.println(worker.getWorkersFromBackend());
-
-
+        Worker worker = new Worker("khush", "testing");
+        worker.getWorkersFromBackend().toString();
+        System.out.println(Arrays.toString(worker.getWorkersFromBackend().toArray()));
     }
 
 

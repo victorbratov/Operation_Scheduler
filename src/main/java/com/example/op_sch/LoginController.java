@@ -24,18 +24,24 @@ public class LoginController {
         for (Worker work : allWorkers){
            if(work.getName().equalsIgnoreCase(name)){
                System.out.println("This Name " + work.getName().toLowerCase() );
+               response.setText("User Found");
+               goTODashBoard();
            }
            else {
                System.out.println("No Name");
                response.setText("User Does Not Exist!");
            }
+
         }
 
 
     }
 
-    public void goToRegisterScreen(){
-        EntryPoint.manager().goTo("REGISTER_SCREEN");
+    public void goBack(){
+        EntryPoint.manager().goTo("HOME_SCREEN");
+    }
+    public void goTODashBoard(){
+        EntryPoint.manager().goTo("DASHBOARD");
     }
 
     public void printName(){

@@ -15,4 +15,9 @@ public class HomeScreenController {
     void goToRegister(){
         EntryPoint.manager().goTo("REGISTER_SCREEN");
     }
+
+    @FXML
+    void goToAppointmentBooking(){
+        EntryPoint.manager().goTo("APPOINTMENT_BOOKING");
+    }
 }
