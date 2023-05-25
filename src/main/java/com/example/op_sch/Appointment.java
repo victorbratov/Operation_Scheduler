@@ -24,12 +24,14 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(String patientName, String doctorName, String description, String gender, int age) {
+    public Appointment(String patientName, String doctorName, String description, String gender, int age , String date , String time) {
         this.patientName = patientName;
         this.doctorName = doctorName;
         this.description = description;
         this.gender = gender;
         this.age = age;
+        this.date = date;
+        this.time = time;
     }
 
     @Column(name = "PATIENT_NAME")
@@ -43,6 +45,28 @@ public class Appointment {
 
     @Column(name =  "GENDER")
     private String gender;
+
+    @Column(name =  "DATE")
+    private String date;
+
+    @Column(name =  "TIME")
+    private String time;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public String getGender() {
         return gender;
@@ -127,8 +151,8 @@ public class Appointment {
     }
 
     public static void main(String[] args) {
-        Appointment appointment1 = new Appointment("Khush" ,"Doc Test", "Testing" , "MALE" ,19 );
-        appointment1.postAppointmentToBackend(appointment1);
+//        Appointment appointment1 = new Appointment("Khush" ,"Doc Test", "Testing" , "MALE" ,19 );
+//        appointment1.postAppointmentToBackend(appointment1);
     }
 
 

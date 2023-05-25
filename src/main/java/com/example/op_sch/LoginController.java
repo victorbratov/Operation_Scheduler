@@ -18,14 +18,15 @@ public class LoginController {
 
 
     public void validation(String name){
+//        goTODashBoard();
         Worker worker = new Worker();
         Set<Worker> allWorkers = worker.getWorkersFromBackend();
 //        System.out.println(allWorkers);
         for (Worker work : allWorkers){
            if(work.getName().equalsIgnoreCase(name)){
-               System.out.println("This Name " + work.getName().toLowerCase() );
-               response.setText("User Found");
-               goTODashBoard();
+//               System.out.println("This Name " + work.getName().toLowerCase() );
+//               response.setText("User Found");
+               EntryPoint.manager().goTo("DASHBOARD");
            }
            else {
                System.out.println("No Name");

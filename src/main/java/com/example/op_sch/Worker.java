@@ -91,7 +91,10 @@ public class Worker {
             }
             e.printStackTrace();
         }
-        return workerSet;
+
+
+        return  workerSet;
+
     }
 
     public void postWorkerToBackend(Worker worker){
