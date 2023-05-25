@@ -23,7 +23,7 @@ public class Dashboard implements Screen {
 
     @Override
     public void init() {
-        FXMLLoader fxmlLoader = new FXMLLoader(EntryPoint.class.getResource("homescreen.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(EntryPoint.class.getResource("worker_dashboard.fxml"));
         try {
             root = fxmlLoader.load();
         } catch (IOException e) {
