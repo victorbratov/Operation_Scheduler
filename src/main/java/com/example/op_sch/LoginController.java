@@ -26,6 +26,7 @@ public class LoginController {
                System.out.println("This Name " + work.getName().toLowerCase() );
                response.setText("User Found");
                goTODashBoard();
+               break;
            }
            else {
                System.out.println("No Name");
