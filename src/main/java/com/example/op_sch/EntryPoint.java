@@ -20,7 +20,7 @@ public class EntryPoint extends Application {
     @Override
     public void start(Stage stage){
         var factory = new ScreenManagerFactory();
-        manager = factory.newScreenManager(1311, 749);
+        manager = factory.newScreenManager(WIDTH, LENGTH);
         var root = manager.root();
         var scene = new Scene(root, 1311 , 749);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("Styles.css")).toExternalForm());
