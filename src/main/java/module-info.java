@@ -11,4 +11,6 @@ module com.example.op_sch {
     exports com.example.op_sch.GUI.AllScreens;
     exports com.example.op_sch.GUI;
     opens com.example.op_sch.GUI.AllScreens to javafx.fxml, javafx.graphics, org.hibernate.orm.core;
+    exports com.example.op_sch.Features;
+    opens com.example.op_sch.Features to javafx.fxml, javafx.graphics, org.hibernate.orm.core;
 }

@@ -133,10 +133,10 @@ public class Appointment {
     }
 
     public Set getAppointmentsFromBackend(){
-        Set<Worker> appointmentSet = new HashSet<>();
+        Set<Appointment> appointmentSet = new HashSet<>();
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List< Worker > students = session.createQuery("from Worker ", Worker.class).list();
+            List< Appointment > students = session.createQuery("from Appointment ", Appointment.class).list();
             students.forEach(student ->{
                 appointmentSet.add(student);
             });
@@ -151,10 +151,34 @@ public class Appointment {
     }
 
     public static void main(String[] args) {
-//        Appointment appointment1 = new Appointment("Khush" ,"Doc Test", "Testing" , "MALE" ,19 );
-//        appointment1.postAppointmentToBackend(appointment1);
+        Appointment appointment1 = new Appointment("ap1", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment2 = new Appointment("ap2", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment3 = new Appointment("ap3", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment = new Appointment();
+        appointment.postAppointmentToBackend(appointment1);
+        appointment.postAppointmentToBackend(appointment2);
+        appointment.postAppointmentToBackend(appointment3);
+
+
+
     }
 
+    public void deleteAppointmentFromBackend(Appointment appointment) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Start a transaction
+            transaction = session.beginTransaction();
+            // Delete the appointment object
+            session.delete(appointment);
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
 
 
 
