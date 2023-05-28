@@ -1,12 +1,9 @@
 package com.example.op_sch.GUI;
 
 import javafx.animation.FadeTransition;
-import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ScreenManager {
@@ -52,4 +49,11 @@ public class ScreenManager {
     public Screen getCurrentScreen(){return currentScreen;}
 
     public StackPane root(){return root;}
+
+    public Screen getScreen(String id){
+        Screen screen = screens.stream()
+                .filter(s -> s.id().equals(id)).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Screen with ID\"" + id + "\" is not registered"));
+        return screen;
+    }
 }

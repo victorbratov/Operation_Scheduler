@@ -1,7 +1,9 @@
 package com.example.op_sch;
 
+import com.example.op_sch.GUI.AllScreens.Dashboard;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 import java.util.Set;
 
@@ -25,6 +27,7 @@ public class LoginController {
            if(work.getName().equalsIgnoreCase(name)){
                System.out.println("This Name " + work.getName().toLowerCase() );
                response.setText("User Found");
+               ((Dashboard) EntryPoint.manager().getScreen("DASHBOARD")).setDoctor(work);
                goTODashBoard();
                break;
            }

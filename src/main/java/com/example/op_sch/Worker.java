@@ -117,6 +117,20 @@ public class Worker {
         System.out.println(Arrays.toString(worker.getWorkersFromBackend().toArray()));
     }
 
+    public Set<Appointment> getAppointments(){
+        Set<Appointment> set = new HashSet<>();
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            List<Appointment> appointments = session.createQuery(String.format("from Appointment A where A.doctorName = %s", this.name), Appointment.class).list();
+            set = Set.copyOf(appointments);
+        }catch (Exception e){
+            if(transaction!=null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return set;
+    }
 
     @Override
     public String toString() {

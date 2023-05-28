@@ -2,6 +2,7 @@ package com.example.op_sch.GUI.AllScreens;
 
 import com.example.op_sch.EntryPoint;
 import com.example.op_sch.GUI.Screen;
+import com.example.op_sch.Worker;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 public class Dashboard implements Screen {
 
     private  Node root;
+    private Worker doctor;
 
     @Override
     public String id() {
@@ -29,6 +31,9 @@ public class Dashboard implements Screen {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void setDoctor(Worker doctor){
+        this.doctor= doctor;
     }
 }
