@@ -13,37 +13,37 @@
 <AnchorPane prefHeight="749.0" prefWidth="1311.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.op_sch.AppointmentController">
    <children>
       <TextField fx:id="patientName" layoutX="651.0" layoutY="201.0" prefHeight="26.0" prefWidth="245.0" />
-      <Label alignment="CENTER" layoutX="408.0" layoutY="202.0" prefHeight="25.0" prefWidth="206.0" text="Enter your name">
+      <Label layoutX="340.0" layoutY="200.0" prefHeight="25.0" prefWidth="206.0" text="Enter your name">
          <font>
             <Font size="22.0" />
          </font></Label>
-      <Button layoutX="558.0" layoutY="615.0" mnemonicParsing="false" onAction="#createAppointment" prefHeight="39.0" prefWidth="169.0" text="Sign in" />
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="81.0" text="Back" />
+      <Button layoutX="558.0" layoutY="615.0" mnemonicParsing="false" onAction="#createAppointment" prefHeight="39.0" prefWidth="169.0" text="Create Appointment" />
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" prefHeight="31.0" prefWidth="81.0" text="Back" />
       <TextField fx:id="patientAge" layoutX="658.0" layoutY="272.0" prefHeight="26.0" prefWidth="230.0" />
-      <Label alignment="CENTER" layoutX="420.0" layoutY="323.0" prefHeight="53.0" prefWidth="207.0" text="Enter Doctor's Name">
+      <Label alignment="CENTER" layoutX="334.0" layoutY="322.0" prefHeight="53.0" prefWidth="207.0" text="Enter Doctor's Name">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
       <TextField fx:id="doctorName" layoutX="659.0" layoutY="335.0" prefHeight="26.0" prefWidth="228.0" />
-      <Label alignment="CENTER" layoutX="423.0" layoutY="270.0" prefHeight="28.0" prefWidth="158.0" text="Enter your age">
+      <Label alignment="CENTER" layoutX="328.0" layoutY="271.0" prefHeight="28.0" prefWidth="158.0" text="Enter your age">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
       <DatePicker fx:id="datePicker" layoutX="668.0" layoutY="462.0" prefHeight="23.0" prefWidth="151.0" />
       <TextField fx:id="description" layoutX="663.0" layoutY="403.0" prefHeight="26.0" prefWidth="501.0" />
-      <Label alignment="CENTER" layoutX="328.0" layoutY="404.0" prefHeight="28.0" prefWidth="314.0" text="Enter description about your visit">
+      <Label alignment="CENTER" layoutX="332.0" layoutY="404.0" prefHeight="28.0" prefWidth="322.0" text="Enter description about your visit">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="372.0" layoutY="449.0" prefHeight="53.0" prefWidth="244.0" text="Choose preffered Date">
+      <Label alignment="CENTER" layoutX="327.0" layoutY="449.0" prefHeight="53.0" prefWidth="244.0" text="Choose preffered Date">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="886.0" layoutY="447.0" prefHeight="53.0" prefWidth="244.0" text="Choose preffered time">
+      <Label alignment="CENTER" layoutX="329.0" layoutY="513.0" prefHeight="53.0" prefWidth="244.0" text="Choose preffered time">
          <font>
             <Font size="22.0" />
          </font>
@@ -54,6 +54,22 @@
                <String fx:value="Male" />
                <String fx:value="Female" />
                <String fx:value="Others" />
+            </FXCollections>
+         </items>
+      </ChoiceBox>
+      <Label alignment="CENTER" layoutX="974.0" layoutY="156.0" prefHeight="53.0" prefWidth="119.0" text="Gender">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="choiceBox2" layoutX="670.0" layoutY="520.0" prefWidth="150.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="11:00am - 12:00am" />
+               <String fx:value="12:30pm - 01:30pm" />
+               <String fx:value="02:00pm - 03:00pm" />
+               <String fx:value="04:30pm - 05:30pm" />  
+               <String fx:value="06:00pm - 07:00pm" />
             </FXCollections>
          </items>
       </ChoiceBox>
