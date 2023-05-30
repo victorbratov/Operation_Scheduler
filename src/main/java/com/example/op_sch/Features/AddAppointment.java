@@ -1,6 +1,8 @@
 package com.example.op_sch.Features;
 
 import com.example.op_sch.Appointment;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -9,10 +11,11 @@ import javafx.util.Pair;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class AddAppointment {
 
-    public void addAppointmentModal() {
+    public void addAppointmentModal(ListView listView , List<Appointment> sortedAppointments ) {
         // Create a modal dialog
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Add Appointment");
@@ -63,24 +66,30 @@ public class AddAppointment {
 
         // Set the action for the save button
         saveButton.setOnAction(event -> {
-            String fieldValue1 = textField1.getText();
-            String fieldValue2 = textField2.getText();
-            String fieldValue3 = textField3.getText();
-            String selectedGender = genderComboBox.getValue();
-            LocalDate selectedDate = datePicker.getValue();
+            // ...
 
             // Create the appointment object
-            Appointment appointment = new Appointment(fieldValue1 , "Brown" , fieldValue3 , selectedGender , Integer.parseInt(fieldValue2) , selectedDate.toString() ,"" );
+            Appointment appointment = new Appointment(textField1.getText() , "Brown" , textField3.getText() , genderComboBox.getValue() , Integer.parseInt(String.valueOf(textField2.getText())) , datePicker.getValue().toString() ,"" );
 
             // Perform the save action or further processing
-            // You can access the appointment object and use its properties as needed
             System.out.println("Appointment details:");
             System.out.println("Patient Name: " + appointment.getPatientName());
             System.out.println("Patient Age: " + appointment.getAge());
             System.out.println("Visit Date: " + appointment.getDate());
             System.out.println("Reason for Visit: " + appointment.getDescription());
             System.out.println("Gender: " + appointment.getGender());
+
+            sortedAppointments.add(appointment);
+            appointment.postAppointmentToBackend(appointment);
+            // Add the new appointment to the sortedAppointments list
+            ObservableList<Appointment> items = FXCollections.observableArrayList(sortedAppointments);
+            listView.setItems(items);
+
+
+            // Close the dialog
+            dialog.close();
         });
+
 
         // Disable the save button until all required fields are filled
         saveButton.disableProperty().bind(textField1.textProperty().isEmpty()

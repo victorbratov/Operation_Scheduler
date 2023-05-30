@@ -7,7 +7,6 @@ import javafx.scene.control.TextField;
 import java.util.Set;
 
 public class SearchAppointments {
-
     public void searchAppointments(TextField searchField , Set<Appointment> appointments, ListView listView){
         searchField.promptTextProperty().setValue("Search For Appointments");
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -26,4 +25,8 @@ public class SearchAppointments {
                     });
         });
     }
+
 }
+
+
+

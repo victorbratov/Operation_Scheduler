@@ -1,20 +1,23 @@
 package com.example.op_sch.Features;
 
 import com.example.op_sch.Appointment;
-import com.example.op_sch.Worker;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.util.Pair;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 public class EditAppointment {
 
-    public void showEditModal(Appointment appointment) {
+    public void showEditModal(Appointment appointment, List<Appointment> sortedAppointments, ListView<Appointment> listView) {
         // Create a modal dialog
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        dialog.setTitle("Edit Worker");
-        dialog.setHeaderText("Editing worker: " + appointment.getPatientName());
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Edit Appointment");
+        dialog.setHeaderText("");
 
         // Set the button types
         ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
@@ -28,43 +31,69 @@ public class EditAppointment {
 
         // Create the input fields
         TextField textField1 = new TextField(appointment.getPatientName());
-        TextField textField2 = new TextField();
-        TextField textField3 = new TextField("Initial value 3");
-        TextField textField4 = new TextField("Initial value 4");
-        TextField textField5 = new TextField("Initial value 5");
+        TextField textField2 = new TextField(String.valueOf(appointment.getAge()));
+        DatePicker datePicker = new DatePicker(LocalDate.parse(appointment.getDate()));
+        TextField textField3 = new TextField(appointment.getDescription());
+        ComboBox<String> genderComboBox = new ComboBox<>();
+        genderComboBox.getItems().addAll("Male", "Female", "Other");
+        genderComboBox.setValue(appointment.getGender());
 
         // Add the input fields to the gridPane
-        gridPane.add(new Label("Field 1:"), 0, 0);
+        gridPane.add(new Label("Patient Name:"), 0, 0);
         gridPane.add(textField1, 1, 0);
-        gridPane.add(new Label("Field 2:"), 0, 1);
+        gridPane.add(new Label("Patient Age:"), 0, 1);
         gridPane.add(textField2, 1, 1);
-        gridPane.add(new Label("Field 3:"), 0, 2);
-        gridPane.add(textField3, 1, 2);
-        gridPane.add(new Label("Field 4:"), 0, 3);
-        gridPane.add(textField4, 1, 3);
-        gridPane.add(new Label("Field 5:"), 0, 4);
-        gridPane.add(textField5, 1, 4);
+        gridPane.add(new Label("Visit Date:"), 0, 2);
+        gridPane.add(datePicker, 1, 2);
+        gridPane.add(new Label("Reason For Visit:"), 0, 3);
+        gridPane.add(textField3, 1, 3);
+        gridPane.add(new Label("Gender:"), 0, 4);
+        gridPane.add(genderComboBox, 1, 4);
 
-        // Enable/Disable save button depending on the input fields' values
-        Node saveButton = dialog.getDialogPane().lookupButton(saveButtonType);
-        saveButton.setDisable(true);
-        dialog.getDialogPane().contentProperty().set(gridPane);
+        dialog.getDialogPane().setContent(gridPane);
 
-        // Validate the input fields
+        // Set the action for the save button
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
-                return new Pair<>(textField1.getText(), textField2.getText());
+                return null; // Returning null, as we only need to update the appointment in the backend
             }
             return null;
         });
 
-        // Show the dialog and wait for it to close
-        dialog.showAndWait().ifPresent(result -> {
-            String fieldValue1 = result.getKey();
-            String fieldValue2 = result.getValue();
-            // Handle the edited field values
-            // Implement the desired functionality here
-        });
-    }
+        // Update the appointment in the backend when the save button is clicked
+        dialog.setOnCloseRequest(event -> {
 
+                String fieldValue1 = textField1.getText();
+                String fieldValue2 = textField2.getText();
+                String fieldValue3 = textField3.getText();
+                String selectedGender = genderComboBox.getValue();
+                LocalDate selectedDate = datePicker.getValue();
+
+                // Update the appointment object
+                appointment.setPatientName(fieldValue1);
+                appointment.setAge(Integer.parseInt(fieldValue2));
+                appointment.setDate(selectedDate.toString());
+                appointment.setDescription(fieldValue3);
+                appointment.setGender(selectedGender);
+
+                // Perform the update action or further processing
+                // You can access the appointment object and use its updated properties as needed
+                System.out.println("Updated appointment details:");
+                System.out.println("Patient Name: " + appointment.getPatientName());
+                System.out.println("Patient Age: " + appointment.getAge());
+                System.out.println("Visit Date: " + appointment.getDate());
+                System.out.println("Reason for Visit: " + appointment.getDescription());
+                System.out.println("Gender: " + appointment.getGender());
+
+                // Update the ListView with the updated appointment
+                listView.refresh();
+
+                // You can also update the appointment in the backend using the updated details
+                appointment.updateAppointmentInBackend(appointment);
+
+        });
+
+        // Show the dialog and wait for it to close
+        dialog.showAndWait();
+    }
 }

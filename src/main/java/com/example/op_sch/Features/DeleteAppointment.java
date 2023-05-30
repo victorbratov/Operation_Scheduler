@@ -12,7 +12,8 @@ public class DeleteAppointment {
     public void deleteAppointment(Set appointments , Appointment selectedAppointment , Appointment appointmentHelper , ListView listView, String patientName){
         appointments.remove(selectedAppointment);
         appointmentHelper.deleteAppointmentFromBackend(selectedAppointment);
-        listView.getItems().remove(patientName);
+        listView.getItems().remove(selectedAppointment);
+        listView.refresh();
     }
 
 }

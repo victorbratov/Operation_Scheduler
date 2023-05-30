@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-import java.util.Set;
+import java.util.*;
 
 public class DashBoardController {
 
@@ -34,14 +34,18 @@ public class DashBoardController {
     @FXML
     TextField searchField;
 
-    ListView<String> listView = new ListView<>();
+    ListView<Appointment> listView = new ListView<>();
+
+    List<Appointment> sortedAppointments = new ArrayList<>(appointments);
+
+
     public void initialize() {
+        sortedAppointments.sort(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTime));
 
         // Create a custom cell factory
-
         SearchAppointments searchAppointments = new SearchAppointments();
-        searchAppointments.searchAppointments(searchField , appointments , listView);
-        listView.setCellFactory(param -> new ListCell<String>() {
+        searchAppointments.searchAppointments(searchField, appointments, listView);
+        listView.setCellFactory(param -> new ListCell<Appointment>() {
             private final HBox hbox = new HBox(); // Container for worker name and buttons
             private final Button editButton = new Button("Edit");
             private final Button deleteButton = new Button("Delete");
@@ -54,59 +58,49 @@ public class DashBoardController {
 
                 // Handle button actions
                 editButton.setOnAction(event -> {
-                    Appointment selectedAppointment = appointments.stream()
-                            .filter(appointment -> appointment.getPatientName().equals(getItem()))
-                            .findFirst()
-                            .orElse(null);
+                    Appointment selectedAppointment = getItem();
                     if (selectedAppointment != null) {
                         EditAppointment editAppointment = new EditAppointment();
-                        editAppointment.showEditModal(selectedAppointment);
+                        editAppointment.showEditModal(selectedAppointment, sortedAppointments, listView);
                     }
                 });
                 deleteButton.setOnAction(event -> {
-                    String patientName = getItem();
-                    Appointment selectedAppointment = appointments.stream()
-                            .filter(appointment -> appointment.getPatientName().equals(patientName))
-                            .findFirst()
-                            .orElse(null);
+                    Appointment selectedAppointment = getItem();
                     if (selectedAppointment != null) {
                         DeleteAppointment deleteAppointment = new DeleteAppointment();
-                        deleteAppointment.deleteAppointment(appointments , selectedAppointment , appointmentHelper , listView , patientName);
+                        deleteAppointment.deleteAppointment(appointments, selectedAppointment, appointmentHelper, listView, selectedAppointment.getPatientName());
                     }
                 });
             }
 
             @Override
-            protected void updateItem(String workerName, boolean empty) {
-                super.updateItem(workerName, empty);
+            protected void updateItem(Appointment appointment, boolean empty) {
+                super.updateItem(appointment, empty);
 
-                if (empty || workerName == null) {
+                if (empty || appointment == null) {
                     setGraphic(null);
                 } else {
-                    ((Label) hbox.getChildren().get(0)).setText(workerName);
+                    ((Label) hbox.getChildren().get(0)).setText(appointment.getPatientName());
                     setGraphic(hbox);
                 }
             }
         });
 
+        // Clear the ListView before adding sorted appointments
+        listView.getItems().clear();
 
-
-
-
-
-
-        // Add worker names to the ListView
-        appointments.forEach(appointment -> {
-            String patientName = appointment.getPatientName().toString();
-            listView.getItems().add(patientName);
-        });
+        // Add sorted appointments to the ListView
+        listView.getItems().addAll(sortedAppointments);
 
         vbox.getChildren().add(listView);
     }
 
     public void addAppointment() {
         AddAppointment appointment = new AddAppointment();
-        appointment.addAppointmentModal();
+        appointment.addAppointmentModal(listView, sortedAppointments);
     }
 
+    public void goToCalenderView(){
+        EntryPoint.manager().goTo("CALENDAR_VIEW");
+    }
 }
