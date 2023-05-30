@@ -20,4 +20,8 @@ public class HomeScreenController {
     void goToAppointmentBooking(){
         EntryPoint.manager().goTo("APPOINTMENT_BOOKING");
     }
+
+
+
+
 }

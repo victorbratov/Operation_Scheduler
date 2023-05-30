@@ -1,9 +1,7 @@
 package com.example.op_sch;
 
-import com.example.op_sch.Features.AddAppointment;
-import com.example.op_sch.Features.DeleteAppointment;
-import com.example.op_sch.Features.EditAppointment;
-import com.example.op_sch.Features.SearchAppointments;
+import com.example.op_sch.Features.*;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.ListView;
@@ -38,6 +36,14 @@ public class DashBoardController {
 
     List<Appointment> sortedAppointments = new ArrayList<>(appointments);
 
+    private Stack<Operation> operationStack = new Stack<Operation>();
+
+
+    private ArrayList<Operation> operationList = new ArrayList<>();
+
+
+
+
 
     public void initialize() {
         sortedAppointments.sort(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTime));
@@ -45,13 +51,19 @@ public class DashBoardController {
         // Create a custom cell factory
         SearchAppointments searchAppointments = new SearchAppointments();
         searchAppointments.searchAppointments(searchField, appointments, listView);
+
+
         listView.setCellFactory(param -> new ListCell<Appointment>() {
             private final HBox hbox = new HBox(); // Container for worker name and buttons
             private final Button editButton = new Button("Edit");
             private final Button deleteButton = new Button("Delete");
 
             {
+
+                editButton.setStyle("-fx-margin-left: 30px;");
+                deleteButton.setStyle("-fx-margin-left: 10px;");
                 hbox.getChildren().addAll(new Label(), editButton, deleteButton);
+
                 HBox.setHgrow(editButton, Priority.ALWAYS);
                 HBox.setHgrow(deleteButton, Priority.ALWAYS);
                 setGraphic(hbox);
@@ -68,7 +80,7 @@ public class DashBoardController {
                     Appointment selectedAppointment = getItem();
                     if (selectedAppointment != null) {
                         DeleteAppointment deleteAppointment = new DeleteAppointment();
-                        deleteAppointment.deleteAppointment(appointments, selectedAppointment, appointmentHelper, listView, selectedAppointment.getPatientName());
+                        deleteAppointment.deleteAppointment(appointments, selectedAppointment, appointmentHelper, listView, selectedAppointment.getPatientName() );
                     }
                 });
             }
@@ -97,10 +109,54 @@ public class DashBoardController {
 
     public void addAppointment() {
         AddAppointment appointment = new AddAppointment();
-        appointment.addAppointmentModal(listView, sortedAppointments);
+        appointment.addAppointmentModal(listView, sortedAppointments, operationList);
     }
 
     public void goToCalenderView(){
-        EntryPoint.manager().goTo("CALENDAR_VIEW");
+        EntryPoint.manager().goTo("CALENDR_VIEW");
     }
+
+    public void undo() {
+        if (!operationList.isEmpty()) {
+            Operation lastOperation = operationList.get(operationList.size() - 1);
+            OperationType operationType = lastOperation.getOperationType();
+
+            switch (operationType) {
+                case ADD:
+                    // Undo add operation
+                    Appointment addedAppointment = lastOperation.getModifiedAppointment();
+                    appointments.remove(addedAppointment);
+                    sortedAppointments.remove(addedAppointment);
+                    break;
+
+                case DELETE:
+                    // Undo delete operation
+                    Appointment deletedAppointment = lastOperation.getModifiedAppointment();
+                    appointments.add(deletedAppointment);
+                    sortedAppointments.add(deletedAppointment);
+                    sortedAppointments.sort(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTime));
+                    break;
+
+                case EDIT:
+                    // Undo edit operation
+                    Appointment editedAppointment = lastOperation.getModifiedAppointment();
+                    Appointment originalAppointment = lastOperation.getOriginalAppointment();
+
+                    appointments.remove(editedAppointment);
+                    appointments.add(originalAppointment);
+                    sortedAppointments.remove(editedAppointment);
+                    sortedAppointments.add(originalAppointment);
+                    sortedAppointments.sort(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTime));
+                    break;
+            }
+
+            // Remove the last operation from the operation list
+            operationList.remove(lastOperation);
+
+            // Update the ListView
+            listView.getItems().clear();
+            listView.getItems().addAll(sortedAppointments);
+        }
+    }
+
 }

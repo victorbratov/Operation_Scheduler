@@ -32,12 +32,11 @@ public class Worker {
         this.position = position;
     }
 
-
-
-
     public String getName() {
         return name;
     }
+
+
 
     public void setName(String name) {
         this.name = name;
@@ -70,6 +69,8 @@ public class Worker {
     }
 
     public void getPatientAppointmentInfo(int appointmentId){
+
+
 
     }
 

@@ -24,6 +24,12 @@ public class Appointment {
 
     public Appointment() {
     }
+    public Appointment(Appointment appointment) {
+        this.patientName = appointment.getPatientName();
+        this.date = appointment.getDate();
+        this.time = appointment.getTime();
+        // Copy any other properties as needed
+    }
 
 
 

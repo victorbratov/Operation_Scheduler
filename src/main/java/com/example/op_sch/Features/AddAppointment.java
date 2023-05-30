@@ -11,11 +11,12 @@ import javafx.util.Pair;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddAppointment {
 
-    public void addAppointmentModal(ListView listView , List<Appointment> sortedAppointments ) {
+    public void addAppointmentModal(ListView listView , List<Appointment> sortedAppointments, ArrayList operation) {
         // Create a modal dialog
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Add Appointment");
