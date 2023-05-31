@@ -13,7 +13,7 @@ public class Testing {
         Patient patient2 = new Patient("ABC", 16 , "Female" , medicalRecord2);
         System.out.println(patient2.getId());
 
-        Worker doctor1 = new Worker("Ram" , "Senior Doctor");
+        Worker doctor1 = new Worker("Ram" , "Senior Doctor", "jbjw", "jhsbchas");
 
         Date date1 = new Date();
         doctor1.createAppointment(date1 , date1 , patient1);

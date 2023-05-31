@@ -6,11 +6,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="749.0" prefWidth="1311.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.op_sch.LoginController">
    <children>
-      <TextField fx:id="name" layoutX="564.0" layoutY="306.0" prefHeight="25.0" prefWidth="184.0" />
-      <TextField layoutX="564.0" layoutY="392.0" prefHeight="25.0" prefWidth="184.0" />
+      <TextField fx:id="loginTextField" layoutX="564.0" layoutY="306.0" prefHeight="25.0" prefWidth="184.0" />
+      <TextField fx:id="passwordTextField" layoutX="564.0" layoutY="392.0" prefHeight="25.0" prefWidth="184.0" />
       <Label layoutX="640.0" layoutY="275.0" text="Login" />
       <Label layoutX="628.0" layoutY="361.0" text="Password" />
       <Button layoutX="571.0" layoutY="450.0" mnemonicParsing="false" onAction="#printName" prefHeight="39.0" prefWidth="169.0" text="Sign in" />

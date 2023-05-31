@@ -5,41 +5,30 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.util.Set;
-
 public class LoginController {
 
     @FXML
-    TextField name;
+    TextField loginTextField, passwordTextField;
     @FXML Label response;
 
 
-    public String getName(){
-        return name.getText();
+    public String getLogin(){
+        return loginTextField.getText();
     }
 
 
     public void validation(String name){
-//        goTODashBoard();
-        Worker worker = new Worker();
-        Set<Worker> allWorkers = worker.getWorkersFromBackend();
-//        System.out.println(allWorkers);
-        for (Worker work : allWorkers){
-           if(work.getName().equalsIgnoreCase(name)){
-               System.out.println("This Name " + work.getName().toLowerCase() );
-               response.setText("User Found");
-               ((Dashboard) EntryPoint.manager().getScreen("DASHBOARD")).setDoctor(work);
-               goTODashBoard();
-               break;
-           }
-           else {
-               System.out.println("No Name");
-               response.setText("User Does Not Exist!");
-           }
 
+        Worker worker = Worker.getWorker(name);
+
+        if(worker!= null && worker.getPassword().equals(passwordTextField.getText())){
+            DashBoardController.setDoctor(worker);
+            goTODashBoard();
         }
 
-
+        else{
+            response.setText("Wrong Login or Password");
+        }
     }
 
     public void goBack(){
@@ -49,7 +38,7 @@ public class LoginController {
         EntryPoint.manager().goTo("DASHBOARD");
     }
     public void printName(){
-        System.out.println(getName());
-        validation(getName());
+        System.out.println(getLogin());
+        validation(getLogin());
     }
 }
