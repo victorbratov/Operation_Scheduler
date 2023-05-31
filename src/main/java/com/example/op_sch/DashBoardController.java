@@ -2,18 +2,18 @@ package com.example.op_sch;
 
 
 import com.example.op_sch.Features.DeleteAppointment;
+import com.example.op_sch.Features.EditAppointment;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TableView;
+
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DashBoardController {
 
@@ -28,7 +28,7 @@ public class DashBoardController {
 
 
     Appointment appointmentHelper = new Appointment();
-    private Set<Appointment> appointments;
+    private Set<Appointment> appointments = new HashSet<>();
 
     private FilteredList<Appointment> filteredAppointments;
 
@@ -36,7 +36,10 @@ public class DashBoardController {
         this.appointments = appointments;
     }
 
+
+
     public void initialize() {
+
 
         appointments =  appointmentHelper.getAppointmentsFromBackend();
         // Sort the appointments by date and time
@@ -70,7 +73,8 @@ public class DashBoardController {
                 editButton.setOnAction(event -> {
                     Appointment appointment = getTableRow().getItem();
                     if (appointment != null) {
-                        // Perform edit action for the appointment
+                        EditAppointment editAppointment = new EditAppointment();
+                        editAppointment.showEditModal(appointment ,filteredAppointments , tableView   );
                         System.out.println("Edit: " + appointment.getPatientName());
                     }
                 });
@@ -97,11 +101,15 @@ public class DashBoardController {
                 deleteButton.setOnAction(event -> {
                     Appointment appointment = getTableRow().getItem();
                     if (appointment != null) {
-                        DeleteAppointment deleteAppointment = new DeleteAppointment();
+                        DeleteAppointment deleteAppointment = new DeleteAppointment(); // Create an instance of DeleteAppointment
                         deleteAppointment.deleteAppointment(appointments ,appointment , tableView );
+                        filteredAppointments.setPredicate(ap -> !ap.equals(appointment)); // Filter out the deleted appointment
+
                         System.out.println("Delete: " + appointment.getPatientName());
-                        appointments= appointmentHelper.getAppointmentsFromBackend();
-                        tableView.refresh();
+//                        tableView.refresh();
+//                        appointments.remove(appointment);
+//                        tableView.refresh();
+
                     }
                 });
             }
