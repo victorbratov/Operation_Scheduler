@@ -10,14 +10,22 @@ public class RegisterController {
 
 
     @FXML
-    TextField name , designation;
+    TextField nameTextField, occupationTextField, loginTextField, passwordTextField;
     @FXML
     Label response;
 
 
 
     public void registerWorker(){
-        Worker worker = new Worker(name.getText() , designation.getText());
+        if(!loginIsValid(loginTextField.getText())) {
+            response.setText("Invalid Login");
+            return;
+        }
+        if(!passwordIsValid(passwordTextField.getText())) {
+            response.setText("Invalid Password");
+            return;
+        }
+        Worker worker = new Worker(loginTextField.getText(), nameTextField.getText(), occupationTextField.getText(), passwordTextField.getText());
 
         Set<Worker> allWorkers = worker.getWorkersFromBackend();
         if(allWorkers.contains(worker)){
@@ -32,6 +40,15 @@ public class RegisterController {
 
     }
 
+
+    private boolean loginIsValid(String login){
+        if(!login.startsWith("@") || login.length() < 6 || login.contains(" ")) return false;
+        return HibernateUtil.getSessionFactory().openSession().createQuery(String.format("from Worker w where w.login = \"%s\"", login), Worker.class).list().isEmpty();
+    }
+
+    private boolean passwordIsValid(String password){
+        return password.length() >= 6 && !password.contains(" ");
+    }
     public void goBack(){
         EntryPoint.manager().goTo("HOME_SCREEN");
     }
