@@ -2,6 +2,7 @@ package com.example.op_sch.Features;
 
 import com.example.op_sch.Appointment;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -10,13 +11,18 @@ public class DeleteAppointment {
 
 
 
-    public void deleteAppointment(Set appointments , Appointment selectedAppointment , Appointment appointmentHelper , ListView listView, String patientName){
-        appointments.remove(selectedAppointment);
-        appointmentHelper.deleteAppointmentFromBackend(selectedAppointment);
+    public void deleteAppointment(Set<Appointment> appointments, Appointment selectedAppointment, TableView<Appointment> tableView) {
+        // Remove the appointment from the backend
+        selectedAppointment.deleteAppointmentFromBackend(selectedAppointment);
 
-        listView.getItems().remove(selectedAppointment);
+        // Remove the appointment from the set
+        boolean removed = appointments.remove(selectedAppointment);
 
-        listView.refresh();
+        if (removed) {
+            // Remove the appointment from the table view
+            tableView.getItems().remove(selectedAppointment);
+            tableView.refresh();
+        }
     }
 
 }

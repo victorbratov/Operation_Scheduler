@@ -1,298 +1,174 @@
 package com.example.op_sch;
 
 
+import com.example.op_sch.Features.DeleteAppointment;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+
+import javafx.scene.control.cell.PropertyValueFactory;
+
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 import org.hibernate.jdbc.Work;
+
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import java.util.Set;
 
 public class DashBoardController {
 
     @FXML
-    VBox vbox;
+    private VBox vbox;
 
     @FXML
-    HBox hBox;
-    Appointment appointmentHelper = new Appointment();
-    Set<Appointment> appointments = appointmentHelper.getAppointmentsFromBackend();
+    TableView<Appointment> tableView;
 
-    public Set<Appointment> getAppointments() {
-        return appointments;
-    }
+    @FXML
+    private TextField searchField;
+
+
+    Appointment appointmentHelper = new Appointment();
+    private Set<Appointment> appointments;
+
+    private FilteredList<Appointment> filteredAppointments;
 
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
     }
 
-    @FXML
-    TextField searchField;
-
-    ListView<Appointment> listView = new ListView<>();
-
-    List<Appointment> sortedAppointments = new ArrayList<>(appointments);
-
-    private Stack<Operation> operationStack = new Stack<Operation>();
-
-
-    private ArrayList<Operation> operationList = new ArrayList<>();
-
-
-
-
-
     public void initialize() {
+
+        appointments =  appointmentHelper.getAppointmentsFromBackend();
+        // Sort the appointments by date and time
+        List<Appointment> sortedAppointments = new ArrayList<>(appointments);
         sortedAppointments.sort(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTime));
 
-        // Create a custom cell factory
-        SearchAppointments searchAppointments = new SearchAppointments();
-        searchAppointments.searchAppointments(searchField, appointments, listView);
+        filteredAppointments = new FilteredList<>(FXCollections.observableArrayList(sortedAppointments));
 
+        // Define the columns and map them to the corresponding fields of the Appointment class
+        TableColumn<Appointment, String> patientNameColumn = new TableColumn<>("Patient Name");
+        patientNameColumn.setCellValueFactory(new PropertyValueFactory<>("patientName"));
 
-        listView.setCellFactory(param -> new ListCell<Appointment>() {
-            private final HBox hbox = new HBox(); // Container for worker name and buttons
+        TableColumn<Appointment, String> dateColumn = new TableColumn<>("Date");
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        TableColumn<Appointment, String> timeColumn = new TableColumn<>("Time");
+        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+
+        TableColumn<Appointment, String> endTimeColumn = new TableColumn<>("End Time");
+//        endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+
+        TableColumn<Appointment, String> descriptionColumn = new TableColumn<>("Description");
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        TableColumn<Appointment, Appointment> editColumn = new TableColumn<>("Edit");
+        editColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        editColumn.setCellFactory(param -> new TableCell<>() {
             private final Button editButton = new Button("Edit");
-            private final Button deleteButton = new Button("Delete");
 
             {
-
-                editButton.setStyle("-fx-margin-left: 30px;");
-                deleteButton.setStyle("-fx-margin-left: 10px;");
-                hbox.getChildren().addAll(new Label(), editButton, deleteButton);
-
-                HBox.setHgrow(editButton, Priority.ALWAYS);
-                HBox.setHgrow(deleteButton, Priority.ALWAYS);
-                setGraphic(hbox);
-
-                // Handle button actions
                 editButton.setOnAction(event -> {
-                    Appointment selectedAppointment = getItem();
-                    if (selectedAppointment != null) {
-                        EditAppointment editAppointment = new EditAppointment();
-                        editAppointment.showEditModal(selectedAppointment, sortedAppointments, listView);
-                    }
-                });
-                deleteButton.setOnAction(event -> {
-                    Appointment selectedAppointment = getItem();
-                    if (selectedAppointment != null) {
-                        DeleteAppointment deleteAppointment = new DeleteAppointment();
-                        deleteAppointment.deleteAppointment(appointments, selectedAppointment, appointmentHelper, listView, selectedAppointment.getPatientName() );
+                    Appointment appointment = getTableRow().getItem();
+                    if (appointment != null) {
+                        // Perform edit action for the appointment
+                        System.out.println("Edit: " + appointment.getPatientName());
                     }
                 });
             }
 
             @Override
-            protected void updateItem(Appointment appointment, boolean empty) {
-                super.updateItem(appointment, empty);
-
-                if (empty || appointment == null) {
+            protected void updateItem(Appointment item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
                     setGraphic(null);
                 } else {
-                    ((Label) hbox.getChildren().get(0)).setText(appointment.getPatientName());
-                    setGraphic(hbox);
+                    setGraphic(editButton);
                 }
             }
         });
 
-        // Clear the ListView before adding sorted appointments
-        listView.getItems().clear();
 
-        // Add sorted appointments to the ListView
-        listView.getItems().addAll(sortedAppointments);
+        TableColumn<Appointment, Appointment> deleteColumn = new TableColumn<>("Delete");
+        deleteColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        deleteColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Delete");
 
-        vbox.getChildren().add(listView);
+            {
+                deleteButton.setOnAction(event -> {
+                    Appointment appointment = getTableRow().getItem();
+                    if (appointment != null) {
+                        DeleteAppointment deleteAppointment = new DeleteAppointment();
+                        deleteAppointment.deleteAppointment(appointments ,appointment , tableView );
+                        System.out.println("Delete: " + appointment.getPatientName());
+                        appointments= appointmentHelper.getAppointmentsFromBackend();
+                        tableView.refresh();
+                    }
+                });
+            }
+
+
+
+
+            @Override
+            protected void updateItem(Appointment item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
+                }
+            }
+        });
+
+
+        // Add the columns to the table view
+        tableView.getColumns().addAll(patientNameColumn, dateColumn, timeColumn, endTimeColumn, descriptionColumn, editColumn , deleteColumn);
+
+        // Set the items for the table view
+        tableView.setItems(filteredAppointments);
+
+        // Add listener to the search field for filtering the appointments
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredAppointments.setPredicate(appointment -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true; // Show all appointments if the search field is empty
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                // Check if any field of the appointment contains the search text
+                if (appointment.getPatientName().toLowerCase().contains(lowerCaseFilter)
+                        || appointment.getDate().toLowerCase().contains(lowerCaseFilter)
+                        || appointment.getTime().toString().contains(lowerCaseFilter)
+                        || appointment.getDescription().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+
+                return false; // Hide the appointment if it doesn't match the search text
+            });
+        });
     }
 
     public void addAppointment() {
-        AddAppointment appointment = new AddAppointment();
-        appointment.addAppointmentModal(listView, sortedAppointments, operationList);
-    }
-
-    public void goToCalenderView(){
-        EntryPoint.manager().goTo("CALENDR_VIEW");
+        // Perform add appointment action
     }
 
     public void undo() {
-        if (!operationList.isEmpty()) {
-            Operation lastOperation = operationList.get(operationList.size() - 1);
-            OperationType operationType = lastOperation.getOperationType();
-
-            switch (operationType) {
-                case ADD:
-                    // Undo add operation
-                    Appointment addedAppointment = lastOperation.getModifiedAppointment();
-                    appointments.remove(addedAppointment);
-                    sortedAppointments.remove(addedAppointment);
-                    break;
-
-                case DELETE:
-                    // Undo delete operation
-                    Appointment deletedAppointment = lastOperation.getModifiedAppointment();
-                    appointments.add(deletedAppointment);
-                    sortedAppointments.add(deletedAppointment);
-                    sortedAppointments.sort(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTime));
-                    break;
-
-                case EDIT:
-                    // Undo edit operation
-                    Appointment editedAppointment = lastOperation.getModifiedAppointment();
-                    Appointment originalAppointment = lastOperation.getOriginalAppointment();
-
-                    appointments.remove(editedAppointment);
-                    appointments.add(originalAppointment);
-                    sortedAppointments.remove(editedAppointment);
-                    sortedAppointments.add(originalAppointment);
-                    sortedAppointments.sort(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTime));
-                    break;
-            }
-
-            // Remove the last operation from the operation list
-            operationList.remove(lastOperation);
-
-            // Update the ListView
-            listView.getItems().clear();
-            listView.getItems().addAll(sortedAppointments);
-        }
+        // Perform undo action
     }
 
 
-    @FXML
-    VBox vbox;
-
-
-    @FXML
-    HBox hBox;
-
-    public void initialize() {
-        ListView<String> listView = new ListView<>();
-
-        Worker workerHelper = new Worker();
-        Set<Worker> allWorkers = workerHelper.getWorkersFromBackend();
-
-        // Create a custom cell factory
-        listView.setCellFactory(param -> new ListCell<String>() {
-            private final HBox hbox = new HBox(); // Container for worker name and buttons
-            private final Button editButton = new Button("Edit");
-            private final Button deleteButton = new Button("Delete");
-
-            {
-                hbox.getChildren().addAll(new Label(), editButton, deleteButton);
-                HBox.setHgrow(editButton, Priority.ALWAYS);
-                HBox.setHgrow(deleteButton, Priority.ALWAYS);
-                setGraphic(hbox);
-
-                // Handle button actions
-                editButton.setOnAction(event -> {
-                    Worker selectedWorker = allWorkers.stream()
-                            .filter(worker -> worker.getName().equals(getItem()))
-                            .findFirst()
-                            .orElse(null);
-                    if (selectedWorker != null) {
-                        showEditModal(selectedWorker);
-                    }
-                });
-                deleteButton.setOnAction(event -> {
-                    String workerName = getItem();
-                    // Handle delete button action for the worker
-                    // Implement the desired functionality here
-                });
-            }
-
-            @Override
-            protected void updateItem(String workerName, boolean empty) {
-                super.updateItem(workerName, empty);
-
-                if (empty || workerName == null) {
-                    setGraphic(null);
-                } else {
-                    ((Label) hbox.getChildren().get(0)).setText(workerName);
-                    setGraphic(hbox);
-                }
-            }
-        });
-
-        // Add worker names to the ListView
-        allWorkers.forEach(worker -> {
-            String nameOfWorker = worker.getName();
-            listView.getItems().add(nameOfWorker);
-        });
-
-        vbox.getChildren().add(listView);
+    public void goToCalendarView() {
+        // Perform action to go to the calendar view
     }
-
-    private void showEditModal(Worker worker) {
-        // Create a modal dialog
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        dialog.setTitle("Edit Worker");
-        dialog.setHeaderText("Editing worker: " + worker.getName());
-
-        // Set the button types
-        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
-
-        // Create the GridPane for the input fields
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(20, 150, 10, 10));
-
-        // Create the input fields
-        TextField textField1 = new TextField(worker.getName());
-        TextField textField2 = new TextField();
-        TextField textField3 = new TextField("Initial value 3");
-        TextField textField4 = new TextField("Initial value 4");
-        TextField textField5 = new TextField("Initial value 5");
-
-        // Add the input fields to the gridPane
-        gridPane.add(new Label("Field 1:"), 0, 0);
-        gridPane.add(textField1, 1, 0);
-        gridPane.add(new Label("Field 2:"), 0, 1);
-        gridPane.add(textField2, 1, 1);
-        gridPane.add(new Label("Field 3:"), 0, 2);
-        gridPane.add(textField3, 1, 2);
-        gridPane.add(new Label("Field 4:"), 0, 3);
-        gridPane.add(textField4, 1, 3);
-        gridPane.add(new Label("Field 5:"), 0, 4);
-        gridPane.add(textField5, 1, 4);
-
-        // Enable/Disable save button depending on the input fields' values
-        Node saveButton = dialog.getDialogPane().lookupButton(saveButtonType);
-        saveButton.setDisable(true);
-        dialog.getDialogPane().contentProperty().set(gridPane);
-
-        // Validate the input fields
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == saveButtonType) {
-                return new Pair<>(textField1.getText(), textField2.getText());
-            }
-            return null;
-        });
-
-        // Show the dialog and wait for it to close
-        dialog.showAndWait().ifPresent(result -> {
-            String fieldValue1 = result.getKey();
-            String fieldValue2 = result.getValue();
-            // Handle the edited field values
-            // Implement the desired functionality here
-        });
-    }
-
-
-
-
-
-
-
-
-
-
 
 }
