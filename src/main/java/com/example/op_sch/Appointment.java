@@ -2,6 +2,7 @@ package com.example.op_sch;
 
 import jakarta.persistence.*;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.util.HashSet;
@@ -23,6 +24,14 @@ public class Appointment {
 
     public Appointment() {
     }
+    public Appointment(Appointment appointment) {
+        this.patientName = appointment.getPatientName();
+        this.date = appointment.getDate();
+        this.time = appointment.getTime();
+        // Copy any other properties as needed
+    }
+
+
 
     public Appointment(String patientName, String doctorName, String description, String gender, int age , String date , String time) {
         this.patientName = patientName;
@@ -132,11 +141,74 @@ public class Appointment {
         }
     }
 
-    public Set getAppointmentsFromBackend(){
-        Set<Worker> appointmentSet = new HashSet<>();
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Appointment retrieveAppointmentFromBackend(int appointmentId) {
+        Appointment persistentAppointment = null;
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List< Worker > students = session.createQuery("from Worker ", Worker.class).list();
+            // Start a transaction
+            transaction = session.beginTransaction();
+            // Retrieve the appointment with the given ID from the database
+            persistentAppointment = session.get(Appointment.class, appointmentId);
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return persistentAppointment;
+    }
+    public void updateAppointmentInBackend(Appointment updatedAppointment) {
+        // Retrieve the existing appointment from the backend using its unique identifier
+        Appointment persistentAppointment = retrieveAppointmentFromBackend(updatedAppointment.getId());
+
+        // Check if the appointment exists
+        if (persistentAppointment != null) {
+            // Update the properties of the existing appointment with the updated appointment's properties
+            persistentAppointment.setPatientName(updatedAppointment.getPatientName());
+            persistentAppointment.setAge(updatedAppointment.getAge());
+            persistentAppointment.setDate(updatedAppointment.getDate());
+            persistentAppointment.setDescription(updatedAppointment.getDescription());
+            persistentAppointment.setGender(updatedAppointment.getGender());
+
+            // Perform the update operation in the backend (e.g., update the appointment in the database)
+
+            Transaction transaction = null;
+            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+                // Start a transaction
+                transaction = session.beginTransaction();
+                // Update the appointment object
+                session.update(persistentAppointment);
+                // Commit the transaction
+                transaction.commit();
+                System.out.println("Appointment updated in the backend: " + persistentAppointment);
+            } catch (Exception e) {
+                if (transaction != null) {
+                    transaction.rollback();
+                }
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Failed to update appointment in the backend: Appointment not found");
+        }
+    }
+
+
+
+    public Set getAppointmentsFromBackend(){
+        Set<Appointment> appointmentSet = new HashSet<>();
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            List< Appointment > students = session.createQuery("from Appointment ", Appointment.class).list();
             students.forEach(student ->{
                 appointmentSet.add(student);
             });
@@ -151,10 +223,31 @@ public class Appointment {
     }
 
     public static void main(String[] args) {
-//        Appointment appointment1 = new Appointment("Khush" ,"Doc Test", "Testing" , "MALE" ,19 );
-//        appointment1.postAppointmentToBackend(appointment1);
+        Appointment appointment1 = new Appointment("ap1", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment2 = new Appointment("ap2", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment3 = new Appointment("ap3", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment = new Appointment();
+        appointment.postAppointmentToBackend(appointment1);
+        appointment.postAppointmentToBackend(appointment2);
+        appointment.postAppointmentToBackend(appointment3);
     }
 
+    public void deleteAppointmentFromBackend(Appointment appointment) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Start a transaction
+            transaction = session.beginTransaction();
+            // Delete the appointment object
+            session.delete(appointment);
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
 
 
 

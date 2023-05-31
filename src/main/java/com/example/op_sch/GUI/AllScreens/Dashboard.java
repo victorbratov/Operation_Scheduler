@@ -41,4 +41,5 @@ public class Dashboard implements Screen {
     public void setDoctor(Worker doctor){
         this.doctor= doctor;
     }
+
 }
