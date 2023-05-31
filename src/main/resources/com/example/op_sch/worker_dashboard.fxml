@@ -4,15 +4,13 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="749.0" prefWidth="1311.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.op_sch.DashBoardController">
    <children>
+      <TableView fx:id="tableView" layoutX="57.0" layoutY="120.0" prefHeight="450.0" prefWidth="1200.0" />
       <Button layoutX="1157.0" layoutY="696.0" onAction="#goToCalendarView" text="Go to Calendar View" />
       <Button layoutX="167.0" layoutY="686.0" onAction="#addAppointment" prefHeight="46.0" prefWidth="126.0" text="Add Appointment" />
       <TextField fx:id="searchField" layoutX="174.0" layoutY="73.0" prefHeight="26.0" prefWidth="882.0" promptText="Search" />
       <Button layoutX="23.0" layoutY="688.0" onAction="#undo" prefHeight="42.0" prefWidth="120.0" text="Undo" />
-      <VBox layoutX="10.0" layoutY="10.0" />
-      <TableView fx:id="tableView" layoutX="57.0" layoutY="120.0" prefHeight="450.0" prefWidth="1200.0" />
    </children>
 </AnchorPane>

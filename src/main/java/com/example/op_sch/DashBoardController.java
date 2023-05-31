@@ -1,6 +1,7 @@
 package com.example.op_sch;
 
 
+import com.example.op_sch.Features.AddAppointment;
 import com.example.op_sch.Features.DeleteAppointment;
 import com.example.op_sch.Features.EditAppointment;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -28,11 +29,11 @@ public class DashBoardController {
 
 
     Appointment appointmentHelper = new Appointment();
-    private Set<Appointment> appointments = new HashSet<>();
+    private HashSet<Appointment> appointments = appointmentHelper.getAppointmentsByDoctorName("Brown");
 
     private FilteredList<Appointment> filteredAppointments;
 
-    public void setAppointments(Set<Appointment> appointments) {
+    public void setAppointments(HashSet<Appointment> appointments) {
         this.appointments = appointments;
     }
 
@@ -41,7 +42,6 @@ public class DashBoardController {
     public void initialize() {
 
 
-        appointments =  appointmentHelper.getAppointmentsFromBackend();
         // Sort the appointments by date and time
         List<Appointment> sortedAppointments = new ArrayList<>(appointments);
         sortedAppointments.sort(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTime));
@@ -103,7 +103,9 @@ public class DashBoardController {
                     if (appointment != null) {
                         DeleteAppointment deleteAppointment = new DeleteAppointment(); // Create an instance of DeleteAppointment
                         deleteAppointment.deleteAppointment(appointments ,appointment , tableView );
-                        filteredAppointments.setPredicate(ap -> !ap.equals(appointment)); // Filter out the deleted appointment
+                        appointments.remove(appointment);
+                        filteredAppointments.getSource().remove(appointment);
+                        tableView.refresh();
 
                         System.out.println("Delete: " + appointment.getPatientName());
 //                        tableView.refresh();
@@ -158,7 +160,8 @@ public class DashBoardController {
     }
 
     public void addAppointment() {
-        // Perform add appointment action
+        AddAppointment appointment = new AddAppointment();
+        appointment.addAppointmentModal(tableView , filteredAppointments , appointments);
     }
 
     public void undo() {

@@ -223,14 +223,21 @@ public class Appointment {
     }
 
     public static void main(String[] args) {
-        Appointment appointment1 = new Appointment("ap1", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
-        Appointment appointment2 = new Appointment("ap2", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment1 = new Appointment("ap1", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment2 = new Appointment("ap2", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
         Appointment appointment3 = new Appointment("ap3", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment4 = new Appointment("ap4", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment5 = new Appointment("ap5", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment6 = new Appointment("ap6", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
         Appointment appointment = new Appointment();
         appointment.postAppointmentToBackend(appointment1);
         appointment.postAppointmentToBackend(appointment2);
         appointment.postAppointmentToBackend(appointment3);
-        System.out.println(Appointment.getAppointmentsByDoctorName("Doctor"));
+        appointment.postAppointmentToBackend(appointment4);
+        appointment.postAppointmentToBackend(appointment5);
+        appointment.postAppointmentToBackend(appointment6);
+
+        System.out.println(appointment.getAppointmentsByDoctorName("Doctor"));
     }
 
     public void deleteAppointmentFromBackend(Appointment appointment) {
@@ -250,14 +257,16 @@ public class Appointment {
         }
     }
 
-    public static Set<Appointment> getAppointmentsByDoctorName(String workerName){
-        Set<Appointment> set = new HashSet<>();
+    public HashSet<Appointment> getAppointmentsByDoctorName(String workerName) {
+        HashSet<Appointment> set = new HashSet<>();
         Transaction transaction = null;
-        try(Session session = HibernateUtil.getSessionFactory().openSession()){
-            List<Appointment> appointments = session.createQuery(String.format("from Appointment A where A.doctorName = \"%s\"", workerName), Appointment.class).list();
-            set = Set.copyOf(appointments);
-        }catch (Exception e){
-            if(transaction!=null){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            List<Appointment> appointments = session.createQuery(
+                            String.format("from Appointment A where A.doctorName = \"%s\"", workerName), Appointment.class)
+                    .list();
+            set = new HashSet<>(appointments);
+        } catch (Exception e) {
+            if (transaction != null) {
                 transaction.rollback();
             }
             e.printStackTrace();

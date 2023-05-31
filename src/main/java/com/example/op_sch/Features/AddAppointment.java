@@ -1,8 +1,10 @@
 package com.example.op_sch.Features;
 
 import com.example.op_sch.Appointment;
+import jakarta.persistence.Table;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -12,11 +14,14 @@ import javafx.util.Pair;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class AddAppointment {
 
-    public void addAppointmentModal(ListView listView , List<Appointment> sortedAppointments, ArrayList operation) {
+    public void addAppointmentModal(TableView tableView , FilteredList<Appointment> sortedAppointments, HashSet<Appointment> appointments) {
+        final FilteredList<Appointment>[] updatedAppointments = new FilteredList[]{sortedAppointments};
+
         // Create a modal dialog
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Add Appointment");
@@ -80,11 +85,22 @@ public class AddAppointment {
             System.out.println("Reason for Visit: " + appointment.getDescription());
             System.out.println("Gender: " + appointment.getGender());
 
-            sortedAppointments.add(appointment);
+
             appointment.postAppointmentToBackend(appointment);
             // Add the new appointment to the sortedAppointments list
-            ObservableList<Appointment> items = FXCollections.observableArrayList(sortedAppointments);
-            listView.setItems(items);
+
+
+            appointments.add(appointment);
+
+            updatedAppointments[0] = new FilteredList<>(FXCollections.observableArrayList(appointments));
+
+            tableView.setItems(updatedAppointments[0]);
+
+
+
+
+
+            tableView.refresh();
 
 
             // Close the dialog
