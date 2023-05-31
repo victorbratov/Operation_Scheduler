@@ -116,6 +116,7 @@ public class Worker {
     }
 
     public static void main(String[] args) {
+
         Worker worker = new Worker("Brown", "Surgeon");
         worker.postWorkerToBackend(worker);
         worker.getWorkersFromBackend().toString();
@@ -126,7 +127,7 @@ public class Worker {
         Set<Appointment> set = new HashSet<>();
         Transaction transaction = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
-            List<Appointment> appointments = session.createQuery(String.format("from Appointment A where A.DOCTOR_NAME = %s", workerName), Appointment.class).list();
+            List<Appointment> appointments = session.createQuery(String.format("from Appointment A where A.name = %s", this.name), Appointment.class).list();
             set = Set.copyOf(appointments);
         }catch (Exception e){
             if(transaction!=null){
