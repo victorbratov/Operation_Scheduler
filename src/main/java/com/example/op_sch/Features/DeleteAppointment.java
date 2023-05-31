@@ -12,12 +12,14 @@ public class DeleteAppointment {
 
 
 
-    public void deleteAppointment(List appointments, Appointment selectedAppointment, TableView<Appointment> tableView) {
+    public void deleteAppointment(Set<Appointment> appointments, Appointment selectedAppointment, TableView<Appointment> tableView) {
         // Remove the appointment from the backend
         selectedAppointment.deleteAppointmentFromBackend(selectedAppointment);
+appointments.remove(selectedAppointment);
+
 
         // Remove the appointment from the set
-        appointments.remove(selectedAppointment);
+
 
         tableView.refresh();
 

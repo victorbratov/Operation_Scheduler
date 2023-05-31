@@ -39,6 +39,7 @@ public class DashBoardController {
 
     public void initialize() {
 
+
         appointments =  appointmentHelper.getAppointmentsFromBackend();
         // Sort the appointments by date and time
         List<Appointment> sortedAppointments = new ArrayList<>(appointments);
@@ -100,10 +101,14 @@ public class DashBoardController {
                     Appointment appointment = getTableRow().getItem();
                     if (appointment != null) {
                         DeleteAppointment deleteAppointment = new DeleteAppointment(); // Create an instance of DeleteAppointment
-                        deleteAppointment.deleteAppointment(filteredAppointments ,appointment , tableView );
+                        deleteAppointment.deleteAppointment(appointments ,appointment , tableView );
+                        filteredAppointments.setPredicate(ap -> !ap.equals(appointment)); // Filter out the deleted appointment
+
                         System.out.println("Delete: " + appointment.getPatientName());
-                        appointments= appointmentHelper.getAppointmentsFromBackend();
-                        tableView.refresh();
+//                        tableView.refresh();
+//                        appointments.remove(appointment);
+//                        tableView.refresh();
+
                     }
                 });
             }
