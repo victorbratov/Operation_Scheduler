@@ -48,13 +48,8 @@ public class LoginController {
     public void goTODashBoard(){
         EntryPoint.manager().goTo("DASHBOARD");
     }
-
     public void printName(){
         System.out.println(getName());
         validation(getName());
     }
-
-
-
-
 }

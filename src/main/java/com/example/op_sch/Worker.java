@@ -32,12 +32,11 @@ public class Worker {
         this.position = position;
     }
 
-
-
-
     public String getName() {
         return name;
     }
+
+
 
     public void setName(String name) {
         this.name = name;
@@ -70,6 +69,8 @@ public class Worker {
     }
 
     public void getPatientAppointmentInfo(int appointmentId){
+
+
 
     }
 
@@ -115,14 +116,14 @@ public class Worker {
     }
 
     public static void main(String[] args) {
-        Worker worker = new Worker();
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            worker = session.createQuery(String.format("from Worker W where W.name = %s", "viktor"), Worker.class).uniqueResult();
-        }
+
+        Worker worker = new Worker("Brown", "Surgeon");
+        worker.postWorkerToBackend(worker);
+        worker.getWorkersFromBackend().toString();
         System.out.println(Arrays.toString(worker.getWorkersFromBackend().toArray()));
     }
 
-    public Set<Appointment> getAppointments(){
+    public Set<Appointment> getAppointments(String workerName){
         Set<Appointment> set = new HashSet<>();
         Transaction transaction = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
