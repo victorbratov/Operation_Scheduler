@@ -22,7 +22,7 @@ public class LoginController {
         Worker worker = Worker.getWorker(name);
 
         if(worker!= null && worker.getPassword().equals(passwordTextField.getText())){
-            ((Dashboard) EntryPoint.manager().getScreen("DASHBOARD")).setDoctor(worker);
+            DashBoardController.setDoctor(worker);
             goTODashBoard();
         }
 

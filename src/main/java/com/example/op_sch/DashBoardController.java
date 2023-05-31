@@ -27,6 +27,7 @@ public class DashBoardController {
     private TextField searchField;
 
 
+    private static Worker doctor;
     Appointment appointmentHelper = new Appointment();
     private Set<Appointment> appointments;
 
@@ -162,4 +163,7 @@ public class DashBoardController {
         // Perform action to go to the calendar view
     }
 
+    public static void setDoctor(Worker Doctor) {
+        doctor = Doctor;
+    }
 }
