@@ -1,46 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="749.0" prefWidth="1311.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.op_sch.DashBoardController">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="749.0" prefWidth="1311.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.op_sch.DashBoardController">
    <children>
-      <Label alignment="CENTER_RIGHT" layoutX="1010.0" layoutY="27.0" prefHeight="60.0" prefWidth="279.0" text="Dashboard View">
-         <font>
-            <Font name="System Bold" size="30.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER_RIGHT" layoutX="931.0" layoutY="66.0" prefHeight="40.0" prefWidth="358.0" text="Edit, Add and delete your appointments">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="9.0" layoutY="9.0" prefHeight="60.0" prefWidth="257.0" text="Good Morning, ">
-         <font>
-            <Font name="System Bold" size="30.0" />
-         </font>
-      </Label>
-      <Label layoutX="13.0" layoutY="47.0" prefHeight="60.0" prefWidth="438.0" text="Mr.Brown">
-         <font>
-            <Font name="System Bold" size="30.0" />
-         </font>
-      </Label>
-      <VBox fx:id="vbox" layoutX="40.0" layoutY="163.0" prefHeight="513.0" prefWidth="1234.0" />
-      <Button alignment="CENTER" layoutX="55.0" layoutY="681.0" mnemonicParsing="false" onAction="#addAppointment" prefHeight="50.0" prefWidth="194.0" style="-fx-border-radius: 20;" text="+ Add Appointment">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
-      <TextField fx:id="searchField" layoutX="40.0" layoutY="113.0" prefHeight="25.0" prefWidth="634.0" promptText="Search For an Appointment" />
-      <Button layoutX="1139.0" layoutY="112.0" mnemonicParsing="false" onAction="#goToCalenderView" prefHeight="26.0" prefWidth="159.0" text="Calender View" />
-      <Button alignment="CENTER" layoutX="269.0" layoutY="681.0" mnemonicParsing="false" onAction="#undo" prefHeight="50.0" prefWidth="194.0" style="-fx-border-radius: 20;" text="Undo">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
+      <Button layoutX="1157.0" layoutY="696.0" onAction="#goToCalendarView" text="Go to Calendar View" />
+      <Button layoutX="167.0" layoutY="686.0" onAction="#addAppointment" prefHeight="46.0" prefWidth="126.0" text="Add Appointment" />
+      <TextField fx:id="searchField" layoutX="163.0" layoutY="73.0" prefHeight="26.0" prefWidth="882.0" promptText="Search" />
+      <Button layoutX="23.0" layoutY="688.0" onAction="#undo" prefHeight="42.0" prefWidth="120.0" text="Undo" />
+      <VBox layoutX="10.0" layoutY="10.0" />
+      <TableView fx:id="tableView" layoutX="33.0" layoutY="134.0" prefHeight="400.0" prefWidth="1200.0">
+         <columns>
+            <TableColumn fx:id="patientNameColumn" text="Patient Name" />
+            <TableColumn fx:id="dateColumn" text="Date" />
+            <TableColumn fx:id="timeColumn" text="Time" />
+            <TableColumn fx:id="locationColumn" text="End Time" />
+            <TableColumn fx:id="descriptionColumn" text="Description" />
+         </columns>
+      </TableView>
    </children>
 </AnchorPane>
