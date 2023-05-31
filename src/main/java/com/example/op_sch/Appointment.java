@@ -230,6 +230,7 @@ public class Appointment {
         appointment.postAppointmentToBackend(appointment1);
         appointment.postAppointmentToBackend(appointment2);
         appointment.postAppointmentToBackend(appointment3);
+        System.out.println(Appointment.getAppointmentsByDoctorName("Doctor"));
     }
 
     public void deleteAppointmentFromBackend(Appointment appointment) {
@@ -249,7 +250,20 @@ public class Appointment {
         }
     }
 
-
+    public static Set<Appointment> getAppointmentsByDoctorName(String workerName){
+        Set<Appointment> set = new HashSet<>();
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            List<Appointment> appointments = session.createQuery(String.format("from Appointment A where A.doctorName = \"%s\"", workerName), Appointment.class).list();
+            set = Set.copyOf(appointments);
+        }catch (Exception e){
+            if(transaction!=null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return set;
+    }
 
     @Override
     public String toString() {
