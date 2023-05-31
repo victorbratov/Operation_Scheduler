@@ -151,8 +151,8 @@ public class Appointment {
     }
 
     public static void main(String[] args) {
-//        Appointment appointment1 = new Appointment("Khush" ,"Doc Test", "Testing" , "MALE" ,19 );
-//        appointment1.postAppointmentToBackend(appointment1);
+        Appointment appointment1 = new Appointment("Khush" ,"Doc Test", "Testing" , "MALE" ,19,"" , "" );
+        appointment1.postAppointmentToBackend(appointment1);
     }
 
 
