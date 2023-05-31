@@ -5,23 +5,14 @@ import com.example.op_sch.Features.DeleteAppointment;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
-
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
-import org.hibernate.jdbc.Work;
-
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
 import java.util.Set;
 
 public class DashBoardController {
