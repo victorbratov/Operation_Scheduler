@@ -13,7 +13,7 @@ import java.util.List;
 
 public class EditAppointment {
 
-    public void showEditModal(Appointment appointment, List<Appointment> sortedAppointments, ListView<Appointment> listView) {
+    public void showEditModal(Appointment appointment, List<Appointment> sortedAppointments, TableView<Appointment> tableView) {
         // Create a modal dialog
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Edit Appointment");
@@ -86,7 +86,7 @@ public class EditAppointment {
                 System.out.println("Gender: " + appointment.getGender());
 
                 // Update the ListView with the updated appointment
-                listView.refresh();
+                tableView.refresh();
 
                 // You can also update the appointment in the backend using the updated details
                 appointment.updateAppointmentInBackend(appointment);
