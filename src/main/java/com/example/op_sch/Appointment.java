@@ -230,7 +230,6 @@ public class Appointment {
         appointment.postAppointmentToBackend(appointment1);
         appointment.postAppointmentToBackend(appointment2);
         appointment.postAppointmentToBackend(appointment3);
-
     }
 
     public void deleteAppointmentFromBackend(Appointment appointment) {
