@@ -1,6 +1,5 @@
 package com.example.op_sch;
 
-import com.example.op_sch.GUI.AllScreens.Dashboard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -8,18 +7,18 @@ import javafx.scene.control.TextField;
 public class LoginController {
 
     @FXML
-    TextField loginTextField, passwordTextField;
+    TextField emailTextField, passwordTextField;
     @FXML Label response;
 
 
     public String getLogin(){
-        return loginTextField.getText();
+        return emailTextField.getText();
     }
 
 
-    public void validation(String name){
+    public void validation(String email){
 
-        Worker worker = Worker.getWorker(name);
+        Worker worker = Worker.getWorkerByEmail(email);
 
         if(worker!= null && worker.getPassword().equals(passwordTextField.getText())){
             DashBoardController.setDoctor(worker);
