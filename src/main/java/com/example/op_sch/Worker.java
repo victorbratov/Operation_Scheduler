@@ -16,8 +16,8 @@ import java.util.*;
 public class Worker {
 
     @Id
-    @Column(name = "ID")
-    private String login;
+    @Column(name = "EMAIL")
+    private String email;
 
     @Column(name = "NAME")
     private String name;
@@ -31,8 +31,8 @@ public class Worker {
     public Worker() {
     }
 
-    public Worker(String login, String name, String position, String password) {
-        this.login = login;
+    public Worker(String email, String name, String position, String password) {
+        this.email = email;
         this.name = name;
         this.position = position;
         this.password = password;
@@ -46,10 +46,10 @@ public class Worker {
         System.out.println(Arrays.toString(worker.getWorkersFromBackend().toArray()));
     }
 
-    public static Worker getWorker(String login) {
+    public static Worker getWorkerByEmail(String email) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Worker worker = session.createQuery(String.format("from Worker W where W.login = \"%s\"", login), Worker.class).uniqueResult();
+            Worker worker = session.createQuery(String.format("from Worker W where W.email = \"%s\"", email), Worker.class).uniqueResult();
             return worker;
         } catch (Exception e) {
             if (transaction != null) {
@@ -76,12 +76,12 @@ public class Worker {
         this.position = position;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String login) {
+        this.email = login;
     }
 
     public void getTimeTable() {
@@ -163,7 +163,7 @@ public class Worker {
     @Override
     public String toString() {
         return "Worker{" +
-                "id=" + login +
+                "id=" + email +
                 ", name='" + name + '\'' +
                 ", position='" + position + '\'' +
                 '}';
