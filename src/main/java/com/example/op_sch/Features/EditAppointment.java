@@ -13,7 +13,7 @@ import java.util.List;
 
 public class EditAppointment {
 
-    public void showEditModal(Appointment appointment, List<Appointment> sortedAppointments, TableView<Appointment> tableView) {
+    public void showEditModal(Appointment appointment, List<Appointment> sortedAppointments,  TableView tableView) {
         // Create a modal dialog
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Edit Appointment");

@@ -40,7 +40,7 @@ public class Worker {
 
     public static void main(String[] args) {
 
-        Worker worker = new Worker("Brown", "Surgeon", "kjjsa", "jhdchsb");
+        Worker worker = new Worker("@Brown", "Surgeon", "kjjsa", "jhdchsb");
         worker.postWorkerToBackend(worker);
         worker.getWorkersFromBackend().toString();
         System.out.println(Arrays.toString(worker.getWorkersFromBackend().toArray()));

@@ -10,7 +10,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.TableView;
 
 import javafx.scene.layout.VBox;
 
@@ -27,10 +26,13 @@ public class DashBoardController {
     @FXML
     private TextField searchField;
 
+    @FXML
+    Label workerName;
+
 
     private static Worker doctor;
     Appointment appointmentHelper = new Appointment();
-    private HashSet<Appointment> appointments = appointmentHelper.getAppointmentsByDoctorName("Brown");
+    private HashSet<Appointment> appointments = appointmentHelper.getAppointmentsByDoctorName(doctor.getName());
 
     private FilteredList<Appointment> filteredAppointments;
 
@@ -41,6 +43,8 @@ public class DashBoardController {
 
 
     public void initialize() {
+
+        workerName.setText("Hello, " + doctor.getName());
 
 
         // Sort the appointments by date and time
@@ -102,19 +106,14 @@ public class DashBoardController {
                 deleteButton.setOnAction(event -> {
                     Appointment appointment = getTableRow().getItem();
                     if (appointment != null) {
-                        DeleteAppointment deleteAppointment = new DeleteAppointment(); // Create an instance of DeleteAppointment
-                        deleteAppointment.deleteAppointment(appointments ,appointment , tableView );
+                        appointmentHelper.deleteAppointmentFromBackend(appointment);
                         appointments.remove(appointment);
                         filteredAppointments.getSource().remove(appointment);
                         tableView.refresh();
-
                         System.out.println("Delete: " + appointment.getPatientName());
-//                        tableView.refresh();
-//                        appointments.remove(appointment);
-//                        tableView.refresh();
-
                     }
                 });
+
             }
 
 
@@ -162,13 +161,17 @@ public class DashBoardController {
 
     public void addAppointment() {
         AddAppointment appointment = new AddAppointment();
-        appointment.addAppointmentModal(tableView , filteredAppointments , appointments);
+        appointment.addAppointmentModal(tableView , filteredAppointments , appointments , doctor);
     }
 
     public void undo() {
         // Perform undo action
     }
 
+
+    public void logout(){
+        EntryPoint.manager().goTo("HOME_SCREEN");
+    }
 
     public void goToCalendarView() {
         // Perform action to go to the calendar view

@@ -21,6 +21,8 @@ public class DeleteAppointment {
         // Remove the appointment from the set
 
 
+
+
         tableView.refresh();
 
     }

@@ -1,6 +1,7 @@
 package com.example.op_sch.Features;
 
 import com.example.op_sch.Appointment;
+import com.example.op_sch.Worker;
 import jakarta.persistence.Table;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,10 +20,10 @@ import java.util.List;
 
 public class AddAppointment {
 
-    public void addAppointmentModal(TableView tableView , FilteredList<Appointment> sortedAppointments, HashSet<Appointment> appointments) {
+    public void addAppointmentModal(TableView tableView , FilteredList<Appointment> sortedAppointments, HashSet<Appointment> appointments , Worker worker) {
         final FilteredList<Appointment>[] updatedAppointments = new FilteredList[]{sortedAppointments};
 
-        // Create a modal dialog
+        // Create a modal dialog`
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Add Appointment");
         dialog.setHeaderText("");
@@ -75,7 +76,7 @@ public class AddAppointment {
             // ...
 
             // Create the appointment object
-            Appointment appointment = new Appointment(textField1.getText() , "Brown" , textField3.getText() , genderComboBox.getValue() , Integer.parseInt(String.valueOf(textField2.getText())) , datePicker.getValue().toString() ,"" );
+            Appointment appointment = new Appointment(textField1.getText() , worker.getName() , textField3.getText() , genderComboBox.getValue() , Integer.parseInt(String.valueOf(textField2.getText())) , datePicker.getValue().toString() ,"" );
 
             // Perform the save action or further processing
             System.out.println("Appointment details:");

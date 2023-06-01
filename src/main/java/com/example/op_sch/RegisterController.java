@@ -35,7 +35,6 @@ public class RegisterController {
         else {
             worker.postWorkerToBackend(worker);
             response.setText("User Created");
-
         }
 
     }
