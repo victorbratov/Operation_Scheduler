@@ -21,8 +21,11 @@
         <property name="hibernate.dbcp.maxIdle">10</property>
         <property name="hibernate.dbcp.minIdle">5</property>
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
-        <mapping class="com.example.op_sch.Worker" />
-        <mapping class="com.example.op_sch.Appointment" />
+        <mapping class="com.example.op_sch.professionals.Worker" />
+        <mapping class="com.example.op_sch.patients.Appointment" />
+        <mapping class="com.example.op_sch.diaryFeatures.TaskList" />
+        <mapping class="com.example.op_sch.patients.MachineBooking" />
+
 
 
     </session-factory>
