@@ -1,6 +1,5 @@
 package com.example.op_sch.GUI;
 
-import com.example.op_sch.CalendarController;
 import com.example.op_sch.GUI.AllScreens.*;
 
 public class ScreenManagerFactory {
@@ -10,8 +9,8 @@ public class ScreenManagerFactory {
         Screen register_screen = new RegisterScreen();
         Screen dashboard_screen = new Dashboard();
         Screen appointment_booking_screen = new AppointmentBooking();
-        Screen calender_view = new CalendarController();
-        ScreenManager manager = new ScreenManager(width, length, homescreen, login_screen, register_screen , dashboard_screen, appointment_booking_screen,calender_view);
+
+        ScreenManager manager = new ScreenManager(width, length, homescreen, login_screen, register_screen , dashboard_screen, appointment_booking_screen);
         manager.goTo(homescreen.id());
         return manager;
     }
