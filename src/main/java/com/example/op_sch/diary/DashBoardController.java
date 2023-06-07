@@ -434,8 +434,6 @@ public class DashBoardController {
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase();
-
-
                 // Check if any field of the appointment contains the search text
                 if (appointment.getPatientName().toLowerCase().contains(lowerCaseFilter)
                         || appointment.getDate().toLowerCase().contains(lowerCaseFilter)
