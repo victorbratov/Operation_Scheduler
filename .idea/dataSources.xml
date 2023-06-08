@@ -14,6 +14,7 @@
       <imported>true</imported>
       <remarks>Hibernate
 
+
 /Users/khushaal04/IdeaProjects/OP_SCH/src/main/resources/hibernate.cfg.xml</remarks>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/DB_OP_SCH?useSSL=false</jdbc-url>

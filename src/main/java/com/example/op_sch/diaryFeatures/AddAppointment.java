@@ -20,6 +20,7 @@ import java.util.Set;
 public class AddAppointment {
 
     Appointment appointmentHelper = new Appointment();
+    Appointment appointment;
     String formattedDate;
 
     CustomAlert alert = new CustomAlert();
@@ -160,6 +161,7 @@ public class AddAppointment {
             // ...
 
             // Create the appointment object
+            appointment = new Appointment(textField1.getText() , worker.getName() , textField3.getText() , genderComboBox.getValue() , Integer.parseInt(String.valueOf(textField2.getText())) , datePicker.getValue().toString() ,timeBox.getValue().toString());
 
             // Perform the save action or further processing
 //            System.out.println("Appointment details:");
@@ -206,5 +208,9 @@ public class AddAppointment {
 
         // Show the dialog and wait for it to close
         dialog.showAndWait();
+    }
+
+    public Appointment getAppointment(){
+        return appointment;
     }
 }
