@@ -2,7 +2,10 @@ package com.example.op_sch.diary;
 
 
 import com.example.op_sch.*;
+import com.example.op_sch.dataStructures.UndoStack;
+import com.example.op_sch.dataStructures.UndoStackNode;
 import com.example.op_sch.diaryFeatures.*;
+import com.example.op_sch.generalClasses.Action;
 import com.example.op_sch.patients.Appointment;
 import com.example.op_sch.patients.MachineBooking;
 import com.example.op_sch.professionals.Worker;
@@ -53,18 +56,22 @@ public class DashBoardController {
     @FXML
     Label workerName;
 
+    @FXML
+    Button undoButton;
+
 
     private static Worker doctor;
     Appointment appointmentHelper = new Appointment();
     private ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
-    private ObservableList<TaskList> tasks ;
+    private ObservableList<TaskList> tasks = FXCollections.observableArrayList();
 
 
     MachineBooking machineBookingHelper = new MachineBooking();
-    private ObservableList<MachineBooking> machineBookings ;
+    private ObservableList<MachineBooking> machineBookings = FXCollections.observableArrayList();
 
     private FilteredList<Appointment> filteredAppointments;
+    private UndoStack undoStack;
 
     public DashBoardController() {
 
@@ -90,19 +97,35 @@ public class DashBoardController {
         machineBookingTableCreation();
         YearMonth currentMonth = YearMonth.now();
         createCalendarView(currentMonth);
+        undoStack = new UndoStack();
     }
 
     public void addAppointment() {
         AddAppointment appointment = new AddAppointment();
         appointment.addAppointmentModal(tableView , filteredAppointments , appointments , doctor);
+        undoStack.push(appointment.getAppointment(), Action.ADD);
         YearMonth currentMonth = YearMonth.now();
         createCalendarView(currentMonth);
     }
 
     public void undo() {
-        // Perform undo action
+        if(!undoStack.isEmpty()){
+            UndoStackNode node = undoStack.pop();
+            Appointment appointment = node.getAppointment();
+            switch (node.getAction()) {
+                case ADD -> appointment.deleteAppointmentFromBackend(appointment);
+                case EDIT -> appointment.updateAppointmentInBackend(appointment);
+                case DELETE -> {
+                    Appointment n_appointment = new Appointment(appointment);
+                    appointment.postAppointmentToBackend(n_appointment);
+                }
+            }
+            YearMonth currentMonth = YearMonth.now();
+            createCalendarView(currentMonth);
+            appointmentTableCreation();
+            tableRefresh();
+        }
     }
-
 
     public void logout(){
         EntryPoint.manager().goTo("HOME_SCREEN");
@@ -199,6 +222,9 @@ public class DashBoardController {
         draggingAppointments();
         searchingAppointments();
 
+        if(!appointments.isEmpty()){
+            appointments.clear();
+        }
         appointments.addAll(appointmentHelper.getAppointmentsByDoctorName(doctor.getName()).toSet());
         appointments.sort(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTime));
         filteredAppointments = new FilteredList<>(appointments , p->true);
@@ -232,6 +258,7 @@ public class DashBoardController {
                 editButton.setOnAction(event -> {
                     Appointment appointment = getTableRow().getItem();
                     if (appointment != null) {
+                        undoStack.push(appointment.fullCopy(), Action.EDIT);
                         EditAppointment editAppointment = new EditAppointment();
                         editAppointment.showEditModal(appointment ,filteredAppointments , tableView   );
                         YearMonth currentMonth = YearMonth.now();
@@ -261,7 +288,7 @@ public class DashBoardController {
                 deleteButton.setOnAction(event -> {
                     Appointment appointment = getTableRow().getItem();
                     if (appointment != null) {
-
+                        undoStack.push(appointment, Action.DELETE);
                         DeleteAppointment deleteAppointment = new DeleteAppointment();
                         deleteAppointment.deleteAppointment(appointment , tableView , filteredAppointments);
                         YearMonth currentMonth = YearMonth.now();
@@ -317,6 +344,7 @@ public class DashBoardController {
 
 
         // Add the columns to the table view
+        tableView.getColumns().clear();
         tableView.getColumns().addAll(patientNameColumn, dateColumn, timeColumn, endTimeColumn, descriptionColumn, editColumn , deleteColumn , machineColumn);
         tableView.setItems(filteredAppointments);
 
@@ -344,9 +372,6 @@ public class DashBoardController {
             });
         });
     }
-
-
-
 
 
 
