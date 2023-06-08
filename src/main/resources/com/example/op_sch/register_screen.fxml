@@ -14,11 +14,11 @@
    <children>
       <ImageView fitHeight="754.0" fitWidth="1313.0" layoutY="-2.0" opacity="0.52">
          <image>
-            <Image url="file:/Users/khushaal04/IdeaProjects/OP_SCH/src/main/java/com/example/op_sch/assets/bg1.jpg" />
+            <Image url="https://i.ibb.co/KF3TrD7/bg1.jpg" />
          </image>
       </ImageView>
-      <TextField fx:id="emailTextField" layoutX="577.0" layoutY="288.0" prefHeight="26.0" prefWidth="274.0" style="-fx-border-radius: 20;" />
-      <Label layoutX="395.0" layoutY="279.0" prefHeight="40.0" prefWidth="107.0" text="Email">
+      <TextField fx:id="emailTextField" layoutX="617.0" layoutY="288.0" prefHeight="26.0" prefWidth="274.0" style="-fx-border-radius: 20;" />
+      <Label layoutX="435.0" layoutY="279.0" prefHeight="40.0" prefWidth="107.0" text="Email">
          <font>
             <Font name="Arial Bold" size="26.0" />
          </font></Label>
@@ -27,31 +27,31 @@
             <Font name="System Bold" size="26.0" />
          </font>
       </Label>
-      <PasswordField fx:id="passwordTextField" layoutX="578.0" layoutY="335.0" prefHeight="26.0" prefWidth="276.0" />
-      <Label layoutX="393.0" layoutY="332.0" prefHeight="40.0" prefWidth="156.0" text="Password">
+      <PasswordField fx:id="passwordTextField" layoutX="618.0" layoutY="335.0" prefHeight="26.0" prefWidth="276.0" />
+      <Label layoutX="433.0" layoutY="332.0" prefHeight="40.0" prefWidth="156.0" text="Password">
          <font>
             <Font name="Arial Bold" size="26.0" />
          </font>
       </Label>
-      <ImageView fitHeight="753.0" fitWidth="388.0" opacity="0.52" style="-fx-blend-mode: multiply;">
+      <ImageView fitHeight="753.0" fitWidth="423.0" opacity="0.52" style="-fx-blend-mode: multiply;">
          <image>
-            <Image url="file:/Users/khushaal04/IdeaProjects/OP_SCH/src/main/java/com/example/op_sch/assets/stethescope.jpg" />
+            <Image url="https://i.ibb.co/4gP0r61/stethescope.jpg" />
          </image>
       </ImageView>
-      <TextField fx:id="occupationTextField" layoutX="579.0" layoutY="390.0" prefHeight="26.0" prefWidth="276.0" />
-      <Label layoutX="394.0" layoutY="386.0" prefHeight="40.0" prefWidth="156.0" text="Designation">
+      <TextField fx:id="occupationTextField" layoutX="619.0" layoutY="390.0" prefHeight="26.0" prefWidth="276.0" />
+      <Label layoutX="434.0" layoutY="386.0" prefHeight="40.0" prefWidth="156.0" text="Designation">
          <font>
             <Font name="Arial Bold" size="26.0" />
          </font>
       </Label>
-      <TextField fx:id="nameTextField" layoutX="576.0" layoutY="233.0" prefHeight="26.0" prefWidth="274.0" style="-fx-border-radius: 20;" />
-      <Label layoutX="394.0" layoutY="224.0" prefHeight="40.0" prefWidth="149.0" text="Full Name">
+      <TextField fx:id="nameTextField" layoutX="616.0" layoutY="233.0" prefHeight="26.0" prefWidth="274.0" style="-fx-border-radius: 20;" />
+      <Label layoutX="434.0" layoutY="224.0" prefHeight="40.0" prefWidth="149.0" text="Full Name">
          <font>
             <Font name="Arial Bold" size="26.0" />
          </font>
       </Label>
-      <TextField layoutX="579.0" layoutY="454.0" prefHeight="26.0" prefWidth="276.0" />
-      <Label layoutX="394.0" layoutY="450.0" prefHeight="40.0" prefWidth="175.0" text="Work Location">
+      <TextField layoutX="619.0" layoutY="454.0" prefHeight="26.0" prefWidth="276.0" />
+      <Label layoutX="434.0" layoutY="450.0" prefHeight="40.0" prefWidth="175.0" text="Work Location">
          <font>
             <Font name="Arial Bold" size="23.0" />
          </font>

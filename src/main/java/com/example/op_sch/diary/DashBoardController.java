@@ -2,6 +2,7 @@ package com.example.op_sch.diary;
 
 
 import com.example.op_sch.*;
+import com.example.op_sch.customComponents.CustomAlert;
 import com.example.op_sch.diaryFeatures.*;
 import com.example.op_sch.patients.Appointment;
 import com.example.op_sch.patients.MachineBooking;
@@ -12,6 +13,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ClipboardContent;
@@ -19,6 +21,11 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
+import javafx.util.Pair;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.*;
@@ -55,13 +62,16 @@ public class DashBoardController {
 
 
     private static Worker doctor;
+    MachineBooking machineBookingHelper = new MachineBooking();
+
     Appointment appointmentHelper = new Appointment();
     private ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
     private ObservableList<TaskList> tasks ;
 
+    private Set<MachineBooking>  machineBookingSet = machineBookingHelper.getMachinesByDoctorName(doctor.getName());
 
-    MachineBooking machineBookingHelper = new MachineBooking();
+
     private ObservableList<MachineBooking> machineBookings ;
 
     private FilteredList<Appointment> filteredAppointments;
@@ -75,7 +85,6 @@ public class DashBoardController {
 
     TaskList taskListHelper = new TaskList();
     Set<TaskList> taskSet = taskListHelper.getTasksByDoctorName(doctor.getName());
-    Set<MachineBooking> machineBookingSet = machineBookingHelper.getMachinesByDoctorName(doctor.getName());
 
 
 
@@ -87,9 +96,9 @@ public class DashBoardController {
     public void initialize() {
         appointmentTableCreation();
         taskTableCreation();
-        machineBookingTableCreation();
         YearMonth currentMonth = YearMonth.now();
         createCalendarView(currentMonth);
+        machineTableCreation();
     }
 
     public void addAppointment() {
@@ -125,12 +134,6 @@ public class DashBoardController {
         CustomCalendar customCalendar = new CustomCalendar();
         customCalendar.createCalendarView(yearMonth , calendarGrid , appointments);
     }
-
-    public void machineBookingTableCreation() {
-        machineBookingHelper.machineBookingTableCreation(machineBookings , machineBookingSet , machineBookingTableView);
-    }
-
-
     public void draggingAppointments(){
         tableView.setRowFactory(tv -> {
             TableRow<Appointment> row = new TableRow<>();
@@ -194,8 +197,10 @@ public class DashBoardController {
     }
 
 
-    public void appointmentTableCreation() {
 
+
+
+    public void appointmentTableCreation() {
         draggingAppointments();
         searchingAppointments();
 
@@ -217,8 +222,8 @@ public class DashBoardController {
         TableColumn<Appointment, String> timeColumn = new TableColumn<>("Time");
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
 
-        TableColumn<Appointment, String> endTimeColumn = new TableColumn<>("End Time");
-//        endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        TableColumn<Appointment, String> locationCol = new TableColumn<>("Location");
+        locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
 
         TableColumn<Appointment, String> descriptionColumn = new TableColumn<>("Description");
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -294,11 +299,63 @@ public class DashBoardController {
                 machineButton.setOnAction(event -> {
                     Appointment appointment = getTableRow().getItem();
                     if (appointment != null) {
-                        machineBookingHelper.addMachineBooking(appointment , machineBookings , machineBookingSet , machineBookingTableView);
+
+                        Dialog<Pair<String, String>> dialog = new Dialog<>();
+                        dialog.setTitle("Book a Machine");
+                        dialog.setHeaderText("");
+
+                        // Set the button types
+                        ButtonType saveButtonType = new ButtonType("Book", ButtonBar.ButtonData.OK_DONE);
+                        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+                        // Create the GridPane for the input fields
+                        GridPane gridPane = new GridPane();
+                        gridPane.setHgap(10);
+                        gridPane.setVgap(10);
+                        gridPane.setPadding(new Insets(20, 150, 10, 10));
+
+                        // Create the input fields
+
+                        ComboBox<String> machineNames = new ComboBox<>();
+                        machineNames.getItems().addAll("MRI", "ECG" , "ECH0" , "BP", "Blood Test");
+
+                        DatePicker datePicker = new DatePicker(LocalDate.now());
+
+                        // Add the input fields to the gridPane
+                        gridPane.add(new Label("Choose :"), 0, 0);
+                        gridPane.add(machineNames, 1, 0);
+                        gridPane.add(new Label("Choose Date"), 0, 2);
+                        gridPane.add(datePicker, 1, 2);
+
+
+                        Button saveButton = (Button) dialog.getDialogPane().lookupButton(saveButtonType);
+                        saveButton.setDisable(false);
+                        dialog.getDialogPane().setContent(gridPane);
+                        saveButton.setOnAction(e -> {
+                            if(machineNames.getValue()!= null && datePicker.getValue() !=null){
+                                MachineBooking machineBooking = new MachineBooking(appointment.getPatientName() , appointment.getDoctorName() , machineNames.getValue().toString(), datePicker.getValue().toString());
+                                machineBookingHelper.postBookingToBackend(machineBooking);
+                                machineBookingTableView.getItems().add(machineBooking);
+                                machineBookingTableView.setItems(machineBookings);
+                                machineBookingTableView.refresh();
+                                dialog.close();
+                            }
+                            else {
+                                CustomAlert customAlert = new CustomAlert();
+                                customAlert.showAlert("Enter Task" , "Enter task and priority level to continue");
+                            }
+
+                        });
+
+                        dialog.showAndWait();
                     }
                 });
-
             }
+
+
+
+
+
             @Override
             protected void updateItem(Appointment item, boolean empty) {
                 super.updateItem(item, empty);
@@ -317,10 +374,57 @@ public class DashBoardController {
 
 
         // Add the columns to the table view
-        tableView.getColumns().addAll(patientNameColumn, dateColumn, timeColumn, endTimeColumn, descriptionColumn, editColumn , deleteColumn , machineColumn);
+        tableView.getColumns().addAll(patientNameColumn, dateColumn, timeColumn, locationCol, descriptionColumn, editColumn , deleteColumn , machineColumn);
         tableView.setItems(filteredAppointments);
 
     }
+
+    public void machineTableCreation() {
+        machineBookings = FXCollections.observableArrayList();
+
+        TableColumn<MachineBooking, String> patientNameCol = new TableColumn<>("Patient Name");
+        patientNameCol.setCellValueFactory(new PropertyValueFactory<>("patientName"));
+
+        TableColumn<MachineBooking, String> machineNameCol = new TableColumn<>("Machine Name");
+        machineNameCol.setCellValueFactory(new PropertyValueFactory<>("machineName"));
+
+        TableColumn<MachineBooking, String> dateCol = new TableColumn<>("Date");
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        TableColumn<MachineBooking, MachineBooking> deleteColumn = new TableColumn<>("Delete");
+        deleteColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        ObservableList<MachineBooking> finalBookings = machineBookings;
+        deleteColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Delete");
+
+            {
+                deleteButton.setOnAction(event -> {
+                    MachineBooking booking = getTableRow().getItem();
+                    if (booking != null) {
+                        machineBookingHelper.deleteMachineFromBackend(booking);
+                        finalBookings.remove(booking);
+                        machineBookingTableView.refresh();
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(MachineBooking item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
+                }
+            }
+        });
+
+        machineBookingTableView.setItems(machineBookings);
+        machineBookingTableView.getColumns().addAll(patientNameCol, machineNameCol, deleteColumn);
+    }
+
+
+
 
     public void  searchingAppointments(){
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -330,8 +434,6 @@ public class DashBoardController {
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase();
-
-
                 // Check if any field of the appointment contains the search text
                 if (appointment.getPatientName().toLowerCase().contains(lowerCaseFilter)
                         || appointment.getDate().toLowerCase().contains(lowerCaseFilter)

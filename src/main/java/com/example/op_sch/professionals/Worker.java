@@ -31,6 +31,17 @@ public class Worker {
     @Column(name = "PASSWORD")
     private String password;
 
+    @Column(name = "Location")
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public Worker() {
     }
 
@@ -39,6 +50,14 @@ public class Worker {
         this.name = name;
         this.position = position;
         this.password = password;
+    }
+
+    public Worker(String email, String name, String position, String password, String location) {
+        this.email = email;
+        this.name = name;
+        this.position = position;
+        this.password = password;
+        this.location = location;
     }
 
     public static void main(String[] args) {
