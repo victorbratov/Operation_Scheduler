@@ -3,10 +3,8 @@ package com.example.op_sch.professionals;
 import com.example.op_sch.dataStructures.CustomSet;
 import com.example.op_sch.patients.Appointment;
 import com.example.op_sch.HibernateUtil;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -33,6 +31,26 @@ public class Worker {
 
     @Column(name = "Location")
     private String location;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getLocation() {
         return location;
@@ -94,7 +112,7 @@ public class Worker {
         return password;
     }
 
-    public CustomSet<Worker> getWorkersFromBackend() {
+    public static CustomSet<Worker> getWorkersFromBackend() {
         CustomSet<Worker> workerSet = new CustomSet<>();
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -114,6 +132,8 @@ public class Worker {
         return workerSet;
 
     }
+
+
 
     public void postWorkerToBackend(Worker worker) {
         Transaction transaction = null;
@@ -136,7 +156,7 @@ public class Worker {
         Set<Appointment> set = new HashSet<>();
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List<Appointment> appointments = session.createQuery(String.format("from Appointment A where A.name = %s", this.name), Appointment.class).list();
+            List<Appointment> appointments = session.createQuery(String.format("from Appointment A where A.name = %s", workerName), Appointment.class).list();
             set = Set.copyOf(appointments);
         } catch (Exception e) {
             if (transaction != null) {

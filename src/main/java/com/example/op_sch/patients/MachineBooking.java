@@ -2,14 +2,8 @@ package com.example.op_sch.patients;
 
 
 import com.example.op_sch.HibernateUtil;
-import com.example.op_sch.dataStructures.CustomSet;
 import jakarta.persistence.*;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

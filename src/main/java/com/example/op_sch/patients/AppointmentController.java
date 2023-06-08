@@ -2,7 +2,6 @@ package com.example.op_sch.patients;
 
 import com.example.op_sch.EntryPoint;
 import com.example.op_sch.customComponents.CustomAlert;
-import com.example.op_sch.patients.Appointment;
 import com.example.op_sch.professionals.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
