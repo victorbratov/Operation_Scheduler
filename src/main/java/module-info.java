@@ -4,6 +4,8 @@ module com.example.op_sch {
     requires jakarta.persistence;
     requires org.hibernate.orm.core;
     requires java.naming;
+    requires org.testng;
+    requires junit;
 
 
     opens com.example.op_sch to javafx.fxml, org.hibernate.orm.core, javafx.graphics;

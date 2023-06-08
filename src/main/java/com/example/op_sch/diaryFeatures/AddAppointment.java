@@ -1,5 +1,6 @@
 package com.example.op_sch.diaryFeatures;
 
+import com.example.op_sch.customComponents.CustomAlert;
 import com.example.op_sch.patients.Appointment;
 import com.example.op_sch.professionals.Worker;
 import javafx.collections.FXCollections;
@@ -21,6 +22,8 @@ public class AddAppointment {
     Appointment appointmentHelper = new Appointment();
     Appointment appointment;
     String formattedDate;
+
+    CustomAlert alert = new CustomAlert();
 
 
     public void onChoosing(ComboBox timeBox , Worker worker ,DatePicker datePicker , DateTimeFormatter formatter ){
@@ -161,40 +164,47 @@ public class AddAppointment {
             appointment = new Appointment(textField1.getText() , worker.getName() , textField3.getText() , genderComboBox.getValue() , Integer.parseInt(String.valueOf(textField2.getText())) , datePicker.getValue().toString() ,timeBox.getValue().toString());
 
             // Perform the save action or further processing
-            System.out.println("Appointment details:");
-            System.out.println("Patient Name: " + appointment.getPatientName());
-            System.out.println("Patient Age: " + appointment.getAge());
-            System.out.println("Visit Date: " + appointment.getDate());
-            System.out.println("Reason for Visit: " + appointment.getDescription());
-            System.out.println("Gender: " + appointment.getGender());
-
-
-            appointment.postAppointmentToBackend(appointment);
-            // Add the new appointment to the sortedAppointments list
-
-
-            appointments.add(appointment);
-
-            updatedAppointments[0] = new FilteredList<>(FXCollections.observableArrayList(appointments));
-
-            tableView.setItems(updatedAppointments[0]);
+//            System.out.println("Appointment details:");
+//            System.out.println("Patient Name: " + appointment.getPatientName());
+//            System.out.println("Patient Age: " + appointment.getAge());
+//            System.out.println("Visit Date: " + appointment.getDate());
+//            System.out.println("Reason for Visit: " + appointment.getDescription());
+//            System.out.println("Gender: " + appointment.getGender());
 
 
 
 
 
-            tableView.refresh();
+            if(textField1.getText().isEmpty() || textField2.getText().isEmpty() || textField3.getText().isEmpty() || timeBox.getValue() ==null || datePicker.getValue() == null){
+                alert.showAlert("Invalid Inputs" , "Enter all Credentials to continue");
+                dialog.close();
+            }
 
+            else {
+                try {
+                        int age  = Integer.parseInt(textField2.getText());
+                        Appointment appointment = new Appointment(textField1.getText() , worker.getName() , textField3.getText() , genderComboBox.getValue() , age , datePicker.getValue().toString() ,timeBox.getValue().toString() , worker.getLocation());
+                        appointment.postAppointmentToBackend(appointment);
+                        appointments.add(appointment);
+                        updatedAppointments[0] = new FilteredList<>(FXCollections.observableArrayList(appointments));
+                        tableView.setItems(updatedAppointments[0]);
+                        tableView.refresh();
+                        dialog.close();
+                    }
+                    catch (Exception e ){
+                        alert.showAlert("Error" , "Invalid Age");
+                        dialog.close();
+                    }
 
-            // Close the dialog
-            dialog.close();
+            }
+
         });
 
 
         // Disable the save button until all required fields are filled
-        saveButton.disableProperty().bind(textField1.textProperty().isEmpty()
-                .or(textField2.textProperty().isEmpty())
-                .or(textField3.textProperty().isEmpty()));
+//        saveButton.disableProperty().bind(textField1.textProperty().isEmpty()
+//                .or(textField2.textProperty().isEmpty())
+//                .or(textField3.textProperty().isEmpty()));
 
         // Show the dialog and wait for it to close
         dialog.showAndWait();

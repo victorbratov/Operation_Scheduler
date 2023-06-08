@@ -8,13 +8,36 @@
       <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="1136846a-c99d-435a-9f36-56a93f2a618d">
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="91d5f0a1-d207-4b24-a97d-c943775922b5">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
       <remarks>Hibernate
 
-/Users/victorbratov/IdeaProjects/OP_SCH/src/main/resources/hibernate.cfg.xml</remarks>
+
+/Users/khushaal04/IdeaProjects/OP_SCH/src/main/resources/hibernate.cfg.xml</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/DB_OP_SCH?useSSL=false</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="b5a2e07b-61bb-4a12-8579-a5c087e7c36f">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+/Users/khushaal04/IdeaProjects/OP_SCH/src/main/resources/hibernate.cfg.xml</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/DB_OP_SCH?useSSL=false</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="c751bada-63e5-4add-9bcd-e79e4c277e23">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+/Users/khushaal04/IdeaProjects/OP_SCH/target/classes/hibernate.cfg.xml</remarks>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/DB_OP_SCH?useSSL=false</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>

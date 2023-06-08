@@ -21,6 +21,8 @@ public class Appointment {
     private int id;
 
 
+
+
     public Appointment() {
     }
     public Appointment(Appointment appointment) {
@@ -36,6 +38,8 @@ public class Appointment {
 
 
 
+
+
     public Appointment(String patientName, String doctorName, String description, String gender, int age , String date , String time) {
         this.patientName = patientName;
         this.doctorName = doctorName;
@@ -44,6 +48,17 @@ public class Appointment {
         this.age = age;
         this.date = date;
         this.time = time;
+    }
+
+    public Appointment(String patientName, String doctorName, String description, String gender, int age , String date , String time , String location) {
+        this.patientName = patientName;
+        this.doctorName = doctorName;
+        this.description = description;
+        this.gender = gender;
+        this.date = date;
+        this.time = time;
+        this.age = age;
+        this.location = location;
     }
 
     @Column(name = "PATIENT_NAME")
@@ -63,6 +78,9 @@ public class Appointment {
 
     @Column(name =  "TIME")
     private String time;
+
+    @Column(name =  "LOCATION")
+    private String location;
 
     public String getDate() {
         return date;
@@ -100,7 +118,13 @@ public class Appointment {
     private  int age;
 
 
+    public String getLocation() {
+        return location;
+    }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getDoctorName() {
         return doctorName;

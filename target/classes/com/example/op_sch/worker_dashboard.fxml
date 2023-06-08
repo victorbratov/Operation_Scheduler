@@ -16,7 +16,7 @@
    <children>
       <ImageView fitHeight="754.0" fitWidth="1313.0" layoutY="-2.0" opacity="0.52">
          <image>
-            <Image url="file:/Users/khushaal04/IdeaProjects/OP_SCH/src/main/java/com/example/op_sch/assets/bg1.jpg" />
+            <Image url="https://i.ibb.co/KF3TrD7/bg1.jpg" />
          </image>
       </ImageView>
 
