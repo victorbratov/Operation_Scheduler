@@ -29,6 +29,10 @@ public class Appointment {
         this.patientName = appointment.getPatientName();
         this.date = appointment.getDate();
         this.time = appointment.getTime();
+        this.description = appointment.getDescription();
+        this.gender = appointment.getGender();
+        this.doctorName = appointment.getDoctorName();
+        this.age = appointment.getAge();
         // Copy any other properties as needed
     }
 
@@ -154,6 +158,8 @@ public class Appointment {
             transaction = session.beginTransaction();
             // save the student objects
             session.persist(appointment);
+            int id  = session.createQuery("select max(A.id) from Appointment A", int.class).getSingleResult();
+            appointment.setId(id);
             // commit transaction
             transaction.commit();
         } catch (Exception e) {
@@ -164,6 +170,11 @@ public class Appointment {
         }
     }
 
+    public Appointment fullCopy(){
+        Appointment n_appointment = new Appointment(this);
+        n_appointment.setId(this.getId());
+        return n_appointment;
+    }
 
 
     public int getId() {
@@ -293,9 +304,7 @@ public class Appointment {
                             String.format("from Appointment A where A.doctorName = \"%s\"", workerName), Appointment.class)
                     .list();
 
-            appointments.forEach(student ->{
-                set.add(student);
-            });
+            appointments.forEach(set::add);
 
         } catch (Exception e) {
             if (transaction != null) {
