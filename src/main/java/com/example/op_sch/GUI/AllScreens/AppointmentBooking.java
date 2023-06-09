@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class AppointmentBooking implements Screen {
     private Node root;
+
     @Override
     public String id() {
         return "APPOINTMENT_BOOKING";

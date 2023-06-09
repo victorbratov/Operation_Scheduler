@@ -9,23 +9,21 @@ import javafx.stage.Stage;
 
 public class ScreenSwitcher {
 
-    public void goToScreen(ActionEvent actionEvent, String FXMLName ){
-        try{
+    public void goToScreen(ActionEvent actionEvent, String FXMLName) {
+        try {
             Stage stage;
             Scene scene;
             Parent root = FXMLLoader.load(getClass().getResource(FXMLName));
-            stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
         }
 
     }
-
 
 
 }

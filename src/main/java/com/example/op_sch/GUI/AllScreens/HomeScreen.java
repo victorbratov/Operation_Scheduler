@@ -21,7 +21,7 @@ public class HomeScreen implements Screen {
     }
 
     @Override
-    public void init(){
+    public void init() {
         FXMLLoader fxmlLoader = new FXMLLoader(EntryPoint.class.getResource("homescreen.fxml"));
         try {
             root = fxmlLoader.load();

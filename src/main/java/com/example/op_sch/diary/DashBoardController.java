@@ -32,73 +32,48 @@ import java.time.format.TextStyle;
 import java.util.*;
 
 
-
-
-
 public class DashBoardController {
-    @FXML
-    private VBox vbox;
-
-    @FXML
-    private TableView<TaskList> taskTable;
-
-    @FXML
-    private Label monthText;
-
+    private static Worker doctor;
     @FXML
     TableView<Appointment> tableView;
-
     @FXML
     TableView<MachineBooking> machineBookingTableView;
-
-    @FXML
-    private TextField searchField;
-
-
-    @FXML
-    private GridPane calendarGrid;
-
     @FXML
     Label workerName;
-
     @FXML
     Button undoButton;
-
     @FXML
     Button redoButton;
-
-
-    private static Worker doctor;
     MachineBooking machineBookingHelper = new MachineBooking();
-
     Appointment appointmentHelper = new Appointment();
+    TaskList taskListHelper = new TaskList();
+    Set<TaskList> taskSet = taskListHelper.getTasksByDoctorName(doctor.getName());
+    @FXML
+    private VBox vbox;
+    @FXML
+    private TableView<TaskList> taskTable;
+    @FXML
+    private Label monthText;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private GridPane calendarGrid;
     private ObservableList<Appointment> appointments = FXCollections.observableArrayList();
-
     private ObservableList<TaskList> tasks = FXCollections.observableArrayList();
-
-    private Set<MachineBooking>  machineBookingSet = machineBookingHelper.getMachinesByDoctorName(doctor.getName());
-
+    private Set<MachineBooking> machineBookingSet = machineBookingHelper.getMachinesByDoctorName(doctor.getName());
     private ObservableList<MachineBooking> machineBookings = FXCollections.observableArrayList();
-
-
     private FilteredList<Appointment> filteredAppointments;
     private UndoStack undoStack;
     private UndoStack redoStack;
-
     public DashBoardController() {
 
     }
 
+    public static void setDoctor(Worker Doctor) {
+        doctor = Doctor;
+    }
 
-
-
-    TaskList taskListHelper = new TaskList();
-    Set<TaskList> taskSet = taskListHelper.getTasksByDoctorName(doctor.getName());
-
-
-
-
-    public void tableRefresh(){
+    public void tableRefresh() {
         tableView.refresh();
     }
 
@@ -114,14 +89,14 @@ public class DashBoardController {
 
     public void addAppointment() {
         AddAppointment appointment = new AddAppointment();
-        appointment.addAppointmentModal(tableView , filteredAppointments , appointments , doctor);
+        appointment.addAppointmentModal(tableView, filteredAppointments, appointments, doctor);
         undoStack.push(appointment.getAppointment(), Action.ADD);
         YearMonth currentMonth = YearMonth.now();
         createCalendarView(currentMonth);
     }
 
     public void undo() {
-        if(!undoStack.isEmpty()){
+        if (!undoStack.isEmpty()) {
             UndoStackNode node = undoStack.pop();
             Appointment appointment = node.getAppointment();
             switch (node.getAction()) {
@@ -147,7 +122,7 @@ public class DashBoardController {
     }
 
     public void redo() {
-        if(!redoStack.isEmpty()){
+        if (!redoStack.isEmpty()) {
             UndoStackNode node = redoStack.pop();
             Appointment appointment = node.getAppointment();
             switch (node.getAction()) {
@@ -172,28 +147,28 @@ public class DashBoardController {
         }
     }
 
-    public void logout(){
+    public void logout() {
         EntryPoint.manager().goTo("HOME_SCREEN");
     }
 
-
-
-    public void addToTask(){
+    public void addToTask() {
         TaskList taskList = new TaskList();
-        taskList.addTasks(doctor , taskTable ,  tasks);
+        taskList.addTasks(doctor, taskTable, tasks);
     }
 
     public void taskTableCreation() {
-        TaskList tableCreator  = new TaskList();
-        tableCreator.taskTableCreation(taskTable , tasks , taskSet);
+        TaskList tableCreator = new TaskList();
+        tableCreator.taskTableCreation(taskTable, tasks, taskSet);
 
 
     }
+
     private void createCalendarView(YearMonth yearMonth) {
         CustomCalendar customCalendar = new CustomCalendar();
-        customCalendar.createCalendarView(yearMonth , calendarGrid , appointments);
+        customCalendar.createCalendarView(yearMonth, calendarGrid, appointments);
     }
-    public void draggingAppointments(){
+
+    public void draggingAppointments() {
         tableView.setRowFactory(tv -> {
             TableRow<Appointment> row = new TableRow<>();
 
@@ -255,20 +230,16 @@ public class DashBoardController {
         });
     }
 
-
-
-
-
     public void appointmentTableCreation() {
         draggingAppointments();
         searchingAppointments();
 
-        if(!appointments.isEmpty()){
+        if (!appointments.isEmpty()) {
             appointments.clear();
         }
         appointments.addAll(appointmentHelper.getAppointmentsByDoctorName(doctor.getName()).toSet());
         appointments.sort(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTime));
-        filteredAppointments = new FilteredList<>(appointments , p->true);
+        filteredAppointments = new FilteredList<>(appointments, p -> true);
         YearMonth currentYearMonth = YearMonth.now();
         String monthName = currentYearMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
         monthText.setText(monthName);
@@ -301,7 +272,7 @@ public class DashBoardController {
                     if (appointment != null) {
                         undoStack.push(appointment.fullCopy(), Action.EDIT);
                         EditAppointment editAppointment = new EditAppointment();
-                        editAppointment.showEditModal(appointment ,filteredAppointments , tableView   );
+                        editAppointment.showEditModal(appointment, filteredAppointments, tableView);
                         YearMonth currentMonth = YearMonth.now();
                         createCalendarView(currentMonth);
                         System.out.println("Edit: " + appointment.getPatientName());
@@ -325,13 +296,14 @@ public class DashBoardController {
         deleteColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         deleteColumn.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button("Delete");
+
             {
                 deleteButton.setOnAction(event -> {
                     Appointment appointment = getTableRow().getItem();
                     if (appointment != null) {
                         undoStack.push(appointment, Action.DELETE);
                         DeleteAppointment deleteAppointment = new DeleteAppointment();
-                        deleteAppointment.deleteAppointment(appointment , tableView , filteredAppointments);
+                        deleteAppointment.deleteAppointment(appointment, tableView, filteredAppointments);
                         YearMonth currentMonth = YearMonth.now();
                         createCalendarView(currentMonth);
 
@@ -339,6 +311,7 @@ public class DashBoardController {
                     }
                 });
             }
+
             @Override
             protected void updateItem(Appointment item, boolean empty) {
                 super.updateItem(item, empty);
@@ -380,7 +353,7 @@ public class DashBoardController {
                         // Create the input fields
 
                         ComboBox<String> machineNames = new ComboBox<>();
-                        machineNames.getItems().addAll("MRI", "ECG" , "ECH0" , "BP", "Blood Test");
+                        machineNames.getItems().addAll("MRI", "ECG", "ECH0", "BP", "Blood Test");
 
                         DatePicker datePicker = new DatePicker(LocalDate.now());
 
@@ -395,17 +368,16 @@ public class DashBoardController {
                         saveButton.setDisable(false);
                         dialog.getDialogPane().setContent(gridPane);
                         saveButton.setOnAction(e -> {
-                            if(machineNames.getValue()!= null && datePicker.getValue() !=null){
-                                MachineBooking machineBooking = new MachineBooking(appointment.getPatientName() , appointment.getDoctorName() , machineNames.getValue().toString(), datePicker.getValue().toString());
+                            if (machineNames.getValue() != null && datePicker.getValue() != null) {
+                                MachineBooking machineBooking = new MachineBooking(appointment.getPatientName(), appointment.getDoctorName(), machineNames.getValue().toString(), datePicker.getValue().toString());
                                 machineBookingHelper.postBookingToBackend(machineBooking);
                                 machineBookingTableView.getItems().add(machineBooking);
                                 machineBookingTableView.setItems(machineBookings);
                                 machineBookingTableView.refresh();
                                 dialog.close();
-                            }
-                            else {
+                            } else {
                                 CustomAlert customAlert = new CustomAlert();
-                                customAlert.showAlert("Enter Task" , "Enter task and priority level to continue");
+                                customAlert.showAlert("Enter Task", "Enter task and priority level to continue");
                             }
 
                         });
@@ -414,9 +386,6 @@ public class DashBoardController {
                     }
                 });
             }
-
-
-
 
 
             @Override
@@ -430,17 +399,16 @@ public class DashBoardController {
             }
         });
 
-        if(!appointments.isEmpty()){
+        if (!appointments.isEmpty()) {
             appointments.addListener((ListChangeListener.Change<? extends Appointment> change) -> {
                 filteredAppointments.setPredicate(appointment -> true);// Refresh the predicate
             });
         }
 
 
-
         // Add the columns to the table view
         tableView.getColumns().clear();
-        tableView.getColumns().addAll(patientNameColumn, dateColumn, timeColumn, descriptionColumn, editColumn , deleteColumn , machineColumn);
+        tableView.getColumns().addAll(patientNameColumn, dateColumn, timeColumn, descriptionColumn, editColumn, deleteColumn, machineColumn);
         tableView.setItems(filteredAppointments);
 
     }
@@ -489,10 +457,7 @@ public class DashBoardController {
         machineBookingTableView.getColumns().addAll(patientNameCol, machineNameCol, deleteColumn);
     }
 
-
-
-
-    public void  searchingAppointments(){
+    public void searchingAppointments() {
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredAppointments.setPredicate(appointment -> {
                 if (newValue == null || newValue.isEmpty()) {
@@ -511,11 +476,5 @@ public class DashBoardController {
                 return false; // Hide the appointment if it doesn't match the search text
             });
         });
-    }
-
-
-
-    public static void setDoctor(Worker Doctor) {
-        doctor = Doctor;
     }
 }

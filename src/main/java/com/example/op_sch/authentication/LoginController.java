@@ -23,7 +23,8 @@ public class LoginController {
     /**
      * The Response.
      */
-    @FXML Label response;
+    @FXML
+    Label response;
 
 
     /**
@@ -31,7 +32,7 @@ public class LoginController {
      *
      * @return the string
      */
-    public String getLogin(){
+    public String getLogin() {
         return emailTextField.getText();
     }
 
@@ -39,20 +40,20 @@ public class LoginController {
     /**
      * Validation.
      * this method validates the details that the user inputs, and gives them essential responses
+     *
      * @param email the email
      */
-    public void validation(String email){
-        if(emailTextField.getText().isEmpty() || passwordTextField.getText().isEmpty()){
+    public void validation(String email) {
+        if (emailTextField.getText().isEmpty() || passwordTextField.getText().isEmpty()) {
             response.setText("Enter all credentials to continue");
             return;
         }
         Worker worker = Worker.getWorkerByEmail(email);
 
-        if(worker!= null && worker.getPassword().equals(passwordTextField.getText())){
+        if (worker != null && worker.getPassword().equals(passwordTextField.getText())) {
             DashBoardController.setDoctor(worker);
             goTODashBoard();
-        }
-        else{
+        } else {
             response.setText("Wrong Login or Password");
         }
     }
@@ -60,21 +61,21 @@ public class LoginController {
     /**
      * Go back.
      */
-    public void goBack(){
+    public void goBack() {
         EntryPoint.manager().goTo("HOME_SCREEN");
     }
 
     /**
      * Go to dash board.
      */
-    public void goTODashBoard(){
+    public void goTODashBoard() {
         EntryPoint.manager().goTo("DASHBOARD");
     }
 
     /**
      * Login -> this is the main method, which checks in for all the validation and then logs the worker in to the diary dashboard.
      */
-    public void login(){
+    public void login() {
         validation(getLogin());
     }
 }

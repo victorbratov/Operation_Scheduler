@@ -6,17 +6,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
 
-import java.time.YearMonth;
 import java.util.Optional;
-import java.util.Set;
 
 public class DeleteAppointment {
 
 
-
     Appointment appointmentHelper = new Appointment();
 
-    public void deleteAppointment(Appointment appointment, TableView<Appointment> tableView , FilteredList<Appointment> filteredAppointments) {
+    public void deleteAppointment(Appointment appointment, TableView<Appointment> tableView, FilteredList<Appointment> filteredAppointments) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Delete Appointment");
@@ -30,8 +27,6 @@ public class DeleteAppointment {
 
             // Delete the appointment from the backend or perform necessary operations
             appointmentHelper.deleteAppointmentFromBackend(appointment);
-
-
 
 
             System.out.println("Delete: " + appointment.getPatientName());

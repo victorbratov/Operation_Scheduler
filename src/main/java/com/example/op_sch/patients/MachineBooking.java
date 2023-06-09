@@ -3,13 +3,11 @@ package com.example.op_sch.patients;
 
 import com.example.op_sch.HibernateUtil;
 import jakarta.persistence.*;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "machineBooking")
@@ -17,27 +15,33 @@ import java.util.Set;
 public class MachineBooking {
 
 
-
+    @Column(name = "patientName")
+    String patientName;
+    @Column(name = "doctorName")
+    String doctorName;
+    @Column(name = "machineName")
+    String machineName;
+    @Column(name = "date")
+    String date;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
 
-
-
-    @Column(name = "patientName")
-     String patientName;
-
-    @Column(name = "doctorName")
-     String doctorName;
-
-    @Column(name = "machineName")
-     String machineName;
-    @Column(name =  "date")
-     String date;
-
     public MachineBooking() {
 
+    }
+
+    public MachineBooking(String patientName, String doctorName, String machineName, String date) {
+        this.patientName = patientName;
+        this.doctorName = doctorName;
+        this.machineName = machineName;
+        this.date = date;
+    }
+
+    public static void main(String[] args) {
+        MachineBooking machineBooking = new MachineBooking("", "", "", "");
+        machineBooking.postBookingToBackend(machineBooking);
     }
 
     public int getId() {
@@ -80,14 +84,6 @@ public class MachineBooking {
         this.date = date;
     }
 
-    public MachineBooking(String patientName, String doctorName, String machineName, String date) {
-        this.patientName = patientName;
-        this.doctorName = doctorName;
-        this.machineName = machineName;
-        this.date = date;
-    }
-
-
     public HashSet<MachineBooking> getMachinesByDoctorName(String workerName) {
         HashSet<MachineBooking> set = new HashSet<>();
         Transaction transaction = null;
@@ -96,7 +92,7 @@ public class MachineBooking {
                             String.format("from MachineBooking A where A.doctorName = \"%s\"", workerName), MachineBooking.class)
                     .list();
 
-            appointments.forEach(student ->{
+            appointments.forEach(student -> {
                 set.add(student);
             });
 
@@ -126,8 +122,7 @@ public class MachineBooking {
         }
     }
 
-
-    public void postBookingToBackend(MachineBooking machineBooking){
+    public void postBookingToBackend(MachineBooking machineBooking) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start a transaction
@@ -144,15 +139,6 @@ public class MachineBooking {
             e.printStackTrace();
         }
     }
-
-
-
-    public static void main(String[] args) {
-        MachineBooking machineBooking = new MachineBooking("" , "" , "" , "");
-        machineBooking.postBookingToBackend(machineBooking);
-    }
-
-
 
     @Override
     public String toString() {

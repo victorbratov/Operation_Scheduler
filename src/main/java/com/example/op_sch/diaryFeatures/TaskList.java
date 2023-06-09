@@ -1,8 +1,8 @@
 package com.example.op_sch.diaryFeatures;
 
 
-import com.example.op_sch.customComponents.CustomAlert;
 import com.example.op_sch.HibernateUtil;
+import com.example.op_sch.customComponents.CustomAlert;
 import com.example.op_sch.professionals.Worker;
 import jakarta.persistence.*;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -37,9 +37,24 @@ public class TaskList {
     private String doctor_name;
 
 
+    public TaskList() {
 
 
+    }
 
+    public TaskList(String description, String priority, String doctor_name) {
+        this.description = description;
+        this.priority = priority;
+        this.doctor_name = doctor_name;
+    }
+
+    public static void main(String[] args) {
+        TaskList taskList = new TaskList("1", "test", "Khush");
+
+        System.out.println(Arrays.toString(taskList.getTasksByDoctorName("Khush").toArray()));
+
+
+    }
 
     public int getId() {
         return id;
@@ -73,24 +88,7 @@ public class TaskList {
         this.doctor_name = doctor_name;
     }
 
-    public TaskList() {
-
-
-
-
-
-    }
-
-
-
-
-    public TaskList(String description, String priority, String doctor_name) {
-        this.description = description;
-        this.priority = priority;
-        this.doctor_name = doctor_name;
-    }
-
-    public void postTaskToBackend(TaskList task){
+    public void postTaskToBackend(TaskList task) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start a transaction
@@ -125,10 +123,7 @@ public class TaskList {
         }
     }
 
-
-
-
-    public void taskTableCreation(TableView taskTable ,ObservableList<TaskList> tasks ,  Set<TaskList> taskSet) {
+    public void taskTableCreation(TableView taskTable, ObservableList<TaskList> tasks, Set<TaskList> taskSet) {
         TaskList taskListHelper = new TaskList();
         tasks = FXCollections.observableArrayList(taskSet);
         TableColumn<TaskList, String> taskNameColumn = new TableColumn<>("Task Name");
@@ -172,13 +167,10 @@ public class TaskList {
         // Set the data to the TableView
 
         taskTable.setItems(tasks);
-        taskTable.getColumns().addAll(taskNameColumn, priorityColumn , deleteColumn);
+        taskTable.getColumns().addAll(taskNameColumn, priorityColumn, deleteColumn);
     }
 
-
-
-
-    public void addTasks(Worker worker , TableView taskTable , ObservableList<TaskList> tasks) {
+    public void addTasks(Worker worker, TableView taskTable, ObservableList<TaskList> tasks) {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Add a Task");
         dialog.setHeaderText("");
@@ -208,26 +200,25 @@ public class TaskList {
         saveButton.setDisable(false);
         dialog.getDialogPane().setContent(gridPane);
 
-      saveButton.setOnAction(event -> {
-          if(priorityBox.getValue()!= null && !textField1.getText().isEmpty()){
-              TaskList taskList = new TaskList(textField1.getText() , priorityBox.getValue().toString() , worker.getName() );
-              postTaskToBackend(taskList);
-              taskTable.getItems().add(taskList);
-              Comparator<TaskList> priorityComparator = Comparator.comparing(TaskList::getPriority);
-              tasks.sort(priorityComparator);
+        saveButton.setOnAction(event -> {
+            if (priorityBox.getValue() != null && !textField1.getText().isEmpty()) {
+                TaskList taskList = new TaskList(textField1.getText(), priorityBox.getValue().toString(), worker.getName());
+                postTaskToBackend(taskList);
+                taskTable.getItems().add(taskList);
+                Comparator<TaskList> priorityComparator = Comparator.comparing(TaskList::getPriority);
+                tasks.sort(priorityComparator);
 
-              // Set the data to the TableView
+                // Set the data to the TableView
 
-              taskTable.setItems(tasks);
-              taskTable.refresh();
-              dialog.close();
-          }
-          else {
-              CustomAlert customAlert = new CustomAlert();
-              customAlert.showAlert("Enter Task" , "Enter task and priority level to continue");
-          }
+                taskTable.setItems(tasks);
+                taskTable.refresh();
+                dialog.close();
+            } else {
+                CustomAlert customAlert = new CustomAlert();
+                customAlert.showAlert("Enter Task", "Enter task and priority level to continue");
+            }
 
-      });
+        });
 
         dialog.showAndWait();
     }
@@ -247,13 +238,5 @@ public class TaskList {
             e.printStackTrace();
         }
         return set;
-    }
-
-    public static void main(String[] args) {
-        TaskList taskList = new TaskList("1" , "test" , "Khush");
-
-        System.out.println(Arrays.toString(taskList.getTasksByDoctorName("Khush").toArray()));
-
-
     }
 }

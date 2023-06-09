@@ -5,6 +5,15 @@ public class LinkedListNode<T> {
     T value;
     LinkedListNode<T> next;
 
+    public LinkedListNode(T value, LinkedListNode<T> next) {
+        this.value = value;
+        this.next = next;
+    }
+
+    public LinkedListNode(T value) {
+        this.value = value;
+    }
+
     public T getValue() {
         return value;
     }
@@ -19,14 +28,5 @@ public class LinkedListNode<T> {
 
     public void setNext(LinkedListNode<T> next) {
         this.next = next;
-    }
-
-    public LinkedListNode(T value, LinkedListNode<T> next) {
-        this.value = value;
-        this.next = next;
-    }
-
-    public LinkedListNode(T value) {
-        this.value = value;
     }
 }

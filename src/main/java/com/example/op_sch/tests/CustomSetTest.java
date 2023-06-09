@@ -70,9 +70,6 @@ public class CustomSetTest {
     }
 
 
-
-
-
     @Test
     public void testIsEmpty() {
         // test checking if the set is empty

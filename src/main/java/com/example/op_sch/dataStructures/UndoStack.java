@@ -5,6 +5,7 @@ import com.example.op_sch.patients.Appointment;
 
 public class UndoStack {
     private UndoStackNode head;
+
     public UndoStack() {
         head = null;
     }
@@ -12,8 +13,7 @@ public class UndoStack {
     public void push(Appointment appointment, Action action) {
         if (head == null) {
             head = new UndoStackNode(appointment, action);
-        }
-        else {
+        } else {
             UndoStackNode node = new UndoStackNode(appointment, action);
             node.setNext(head);
             head = node;
@@ -28,6 +28,7 @@ public class UndoStack {
         head = head.getNext();
         return node;
     }
+
     public boolean isEmpty() {
         return head == null;
     }

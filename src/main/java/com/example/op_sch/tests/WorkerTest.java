@@ -3,8 +3,8 @@ package com.example.op_sch.tests;
 import com.example.op_sch.professionals.Worker;
 import org.junit.Test;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class WorkerTest {
     @Test
@@ -16,25 +16,23 @@ public class WorkerTest {
         worker.postWorkerToBackend(worker);
 
         // then fetch the posted worker from the backend
-          Worker retrievedWorker = Worker.getWorkerByEmail(worker.getEmail());
-          assertNotNull(retrievedWorker);
-          assertEquals(worker.getEmail(), retrievedWorker.getEmail());
-          assertEquals(worker.getName(), retrievedWorker.getName());
-          assertEquals(worker.getPosition(), retrievedWorker.getPosition());
+        Worker retrievedWorker = Worker.getWorkerByEmail(worker.getEmail());
+        assertNotNull(retrievedWorker);
+        assertEquals(worker.getEmail(), retrievedWorker.getEmail());
+        assertEquals(worker.getName(), retrievedWorker.getName());
+        assertEquals(worker.getPosition(), retrievedWorker.getPosition());
     }
 
     @Test
     public void testGetWorkersFromBackend() {
         // test getting a worker form backend
         try {
-          Worker worker = Worker.getWorkerByEmail("k@gmail.com");
-          assertNotNull(worker);
-          assertEquals(worker.getEmail(),  "k@gmail.com");
-      }
-      catch (Exception e){
-      }
+            Worker worker = Worker.getWorkerByEmail("k@gmail.com");
+            assertNotNull(worker);
+            assertEquals(worker.getEmail(), "k@gmail.com");
+        } catch (Exception e) {
+        }
     }
-
 
 
 }

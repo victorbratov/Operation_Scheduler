@@ -7,22 +7,22 @@ import javafx.util.Duration;
 import java.util.List;
 
 public class ScreenManager {
-    List<Screen> screens;
     private final Duration dur = Duration.millis(300);
     private final int WIDTH;
     private final int LENGTH;
+    List<Screen> screens;
     private Screen currentScreen;
     private StackPane root;
     private FadeTransition transition;
 
-    public ScreenManager(int width, int length, Screen ...screens) {
+    public ScreenManager(int width, int length, Screen... screens) {
         this.screens = List.of(screens);
         this.WIDTH = width;
         this.LENGTH = length;
         init();
     }
 
-    private void init(){
+    private void init() {
         root = new StackPane();
         transition = new FadeTransition(dur);
         transition.setNode(root);
@@ -30,15 +30,15 @@ public class ScreenManager {
         transition.setToValue(0);
         transition.setAutoReverse(true);
         transition.setCycleCount(2);
-        transition.currentTimeProperty().addListener((observable, oldVal, newVal)->{
-            if(transition.getNode().getOpacity()<0.01){
+        transition.currentTimeProperty().addListener((observable, oldVal, newVal) -> {
+            if (transition.getNode().getOpacity() < 0.01) {
                 root.getChildren().clear();
                 root.getChildren().add(currentScreen.content());
             }
         });
     }
 
-    public void goTo(String id){
+    public void goTo(String id) {
         currentScreen = screens.stream()
                 .filter(s -> s.id().equals(id)).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Screen with ID\"" + id + "\" is not registered"));
@@ -46,11 +46,15 @@ public class ScreenManager {
         transition.playFromStart();
     }
 
-    public Screen getCurrentScreen(){return currentScreen;}
+    public Screen getCurrentScreen() {
+        return currentScreen;
+    }
 
-    public StackPane root(){return root;}
+    public StackPane root() {
+        return root;
+    }
 
-    public Screen getScreen(String id){
+    public Screen getScreen(String id) {
         Screen screen = screens.stream()
                 .filter(s -> s.id().equals(id)).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Screen with ID\"" + id + "\" is not registered"));

@@ -11,15 +11,14 @@ import javafx.scene.shape.Rectangle;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.Set;
 
 public class CustomCalendar {
 
-    private boolean hasAppointmentsOnDate(LocalDate date ,ObservableList<Appointment>appointments) {
+    private boolean hasAppointmentsOnDate(LocalDate date, ObservableList<Appointment> appointments) {
 
 
-        for (Appointment appointment : appointments){
-            if(date.toString().equals(appointment.getDate()) ){
+        for (Appointment appointment : appointments) {
+            if (date.toString().equals(appointment.getDate())) {
                 return true;
             }
         }

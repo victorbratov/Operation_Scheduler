@@ -10,7 +10,7 @@ import java.util.List;
 
 public class EditAppointment {
 
-    public void showEditModal(Appointment appointment, List<Appointment> sortedAppointments,  TableView tableView) {
+    public void showEditModal(Appointment appointment, List<Appointment> sortedAppointments, TableView tableView) {
         // Create a modal dialog
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Edit Appointment");
@@ -60,33 +60,33 @@ public class EditAppointment {
         // Update the appointment in the backend when the save button is clicked
         dialog.setOnCloseRequest(event -> {
 
-                String fieldValue1 = textField1.getText();
-                String fieldValue2 = textField2.getText();
-                String fieldValue3 = textField3.getText();
-                String selectedGender = genderComboBox.getValue();
-                LocalDate selectedDate = datePicker.getValue();
+            String fieldValue1 = textField1.getText();
+            String fieldValue2 = textField2.getText();
+            String fieldValue3 = textField3.getText();
+            String selectedGender = genderComboBox.getValue();
+            LocalDate selectedDate = datePicker.getValue();
 
-                // Update the appointment object
-                appointment.setPatientName(fieldValue1);
-                appointment.setAge(Integer.parseInt(fieldValue2));
-                appointment.setDate(selectedDate.toString());
-                appointment.setDescription(fieldValue3);
-                appointment.setGender(selectedGender);
+            // Update the appointment object
+            appointment.setPatientName(fieldValue1);
+            appointment.setAge(Integer.parseInt(fieldValue2));
+            appointment.setDate(selectedDate.toString());
+            appointment.setDescription(fieldValue3);
+            appointment.setGender(selectedGender);
 
-                // Perform the update action or further processing
-                // You can access the appointment object and use its updated properties as needed
-                System.out.println("Updated appointment details:");
-                System.out.println("Patient Name: " + appointment.getPatientName());
-                System.out.println("Patient Age: " + appointment.getAge());
-                System.out.println("Visit Date: " + appointment.getDate());
-                System.out.println("Reason for Visit: " + appointment.getDescription());
-                System.out.println("Gender: " + appointment.getGender());
+            // Perform the update action or further processing
+            // You can access the appointment object and use its updated properties as needed
+            System.out.println("Updated appointment details:");
+            System.out.println("Patient Name: " + appointment.getPatientName());
+            System.out.println("Patient Age: " + appointment.getAge());
+            System.out.println("Visit Date: " + appointment.getDate());
+            System.out.println("Reason for Visit: " + appointment.getDescription());
+            System.out.println("Gender: " + appointment.getGender());
 
-                // Update the ListView with the updated appointment
-                tableView.refresh();
+            // Update the ListView with the updated appointment
+            tableView.refresh();
 
-                // You can also update the appointment in the backend using the updated details
-                appointment.updateAppointmentInBackend(appointment);
+            // You can also update the appointment in the backend using the updated details
+            appointment.updateAppointmentInBackend(appointment);
 
         });
 
