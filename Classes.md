@@ -1,7 +1,9 @@
 # Classes
+
 ___
+
 1. Worker
-    * Fields 
+    * Fields
         * Name
         * Position
         * WorkerID
@@ -14,22 +16,22 @@ ___
     * Methods
         * getTimetable
 3. Calendar
-   * Fields
-      * Day[] array
-   * Methods
-      * getDoctorTimetableByID
-      * getPatientTimetableByID
+    * Fields
+        * Day[] array
+    * Methods
+        * getDoctorTimetableByID
+        * getPatientTimetableByID
 4. Day
-   * Fields
-      * Appointment[] array
-   * Methods
-      * detAppointmentsByDoctorID
-      * detAppointmentsByPatientID
+    * Fields
+        * Appointment[] array
+    * Methods
+        * detAppointmentsByDoctorID
+        * detAppointmentsByPatientID
 5. Appointment
-   * Fields
-      * StartTime
-      * EndTime
-      * DoctorID
-      * PatientID
-   * Methods
-      * getInfo
+    * Fields
+        * StartTime
+        * EndTime
+        * DoctorID
+        * PatientID
+    * Methods
+        * getInfo

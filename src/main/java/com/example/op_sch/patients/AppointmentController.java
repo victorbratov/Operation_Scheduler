@@ -23,7 +23,8 @@ public class AppointmentController {
     TextField patientAge;
     @FXML
     TextField description;
-    @FXML DatePicker datePicker;
+    @FXML
+    DatePicker datePicker;
 
     @FXML
     ComboBox<String> doctorChoose;
@@ -34,34 +35,32 @@ public class AppointmentController {
 
     Worker workerHelper = new Worker();
     Set<Worker> allWorkers = workerHelper.getWorkersFromBackend().toSet();
-
+    Appointment appointmentHelper = new Appointment();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    String formattedDate;
 
     public void validation() {
-        if(patientName.getText() == null || patientName.getText().isEmpty()){
+        if (patientName.getText() == null || patientName.getText().isEmpty()) {
             CustomAlert alert = new CustomAlert();
             alert.showAlert("Enter Patient's Name", "In order to move ahead, you need to complete all details!");
             return;
         }
-        if(patientAge.getText() == null || patientAge.getText().isEmpty()){
+        if (patientAge.getText() == null || patientAge.getText().isEmpty()) {
             CustomAlert alert = new CustomAlert();
             alert.showAlert("Enter Patient's Age", "In order to move ahead, you need to complete all details!");
             return;
         }
-        if(description.getText() == null || description.getText().isEmpty()){
+        if (description.getText() == null || description.getText().isEmpty()) {
             CustomAlert alert = new CustomAlert();
             alert.showAlert("Enter Description of your visit", "In order to move ahead, you need to complete all details!");
             return;
         }
-        if (datePicker.getValue() == null){
+        if (datePicker.getValue() == null) {
             CustomAlert alert = new CustomAlert();
             alert.showAlert("Enter Date of the Appointment", "In order to move ahead, you need to complete all details!");
             return;
         }
     }
-
-    Appointment appointmentHelper = new Appointment();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    String formattedDate;
 
     public void initialize() {
 
@@ -110,7 +109,7 @@ public class AppointmentController {
     }
 
 
-    public void onChoosing(){
+    public void onChoosing() {
         Set<String> timeSet = new HashSet<>();
         timeSet.add("10:00");
         timeSet.add("10:30");
@@ -128,7 +127,7 @@ public class AppointmentController {
 
             Set<Appointment> allAppointments = appointmentHelper.getAppointmentsByDoctorName(selectedDoctor).toSet();
             for (Appointment appointment : allAppointments) {
-                if(formattedDate.equals(appointment.getDate())){
+                if (formattedDate.equals(appointment.getDate())) {
                     timeSet.remove(appointment.getTime());
                 }
             }
@@ -136,9 +135,9 @@ public class AppointmentController {
         }
     }
 
-    public void createAppointment(){
+    public void createAppointment() {
         validation();
-        Appointment newAppointment = new Appointment(patientName.getText(), doctorChoose.getValue().toString() , description.getText(), choiceBox.getValue().toString() , 19 , datePicker.getValue().format(formatter).toString(), "12:00");
+        Appointment newAppointment = new Appointment(patientName.getText(), doctorChoose.getValue().toString(), description.getText(), choiceBox.getValue().toString(), 19, datePicker.getValue().format(formatter).toString(), "12:00");
         try {
             newAppointment.postAppointmentToBackend(newAppointment);
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -146,17 +145,17 @@ public class AppointmentController {
             alert.setContentText("Your booking has been successfully made, click below to go back");
             ButtonType buttonTypeOne = new ButtonType("Go Back");
             alert.getButtonTypes().setAll(buttonTypeOne);
-            alert.showAndWait().ifPresent(event ->{
-                if(event == buttonTypeOne){
+            alert.showAndWait().ifPresent(event -> {
+                if (event == buttonTypeOne) {
                     EntryPoint.manager().goTo("HOME_SCREEN");
                 }
             });
-        } catch (Exception exception){
+        } catch (Exception exception) {
             System.out.println(exception.getMessage());
         }
     }
 
-    public void goBack(){
+    public void goBack() {
         EntryPoint.manager().goTo("HOME_SCREEN");
     }
 }

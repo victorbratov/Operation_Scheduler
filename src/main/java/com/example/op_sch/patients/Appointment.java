@@ -19,12 +19,26 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
-
-
-
+    @Column(name = "PATIENT_NAME")
+    private String patientName;
+    @Column(name = "DOCTOR_NAME")
+    private String doctorName;
+    @Column(name = "DESCRIPTION")
+    private String description;
+    @Column(name = "GENDER")
+    private String gender;
+    @Column(name = "DATE")
+    private String date;
+    @Column(name = "TIME")
+    private String time;
+    @Column(name = "LOCATION")
+    private String location;
+    @Column(name = "AGE")
+    private int age;
 
     public Appointment() {
     }
+
     public Appointment(Appointment appointment) {
         this.patientName = appointment.getPatientName();
         this.date = appointment.getDate();
@@ -37,11 +51,7 @@ public class Appointment {
         // Copy any other properties as needed
     }
 
-
-
-
-
-    public Appointment(String patientName, String doctorName, String description, String gender, int age , String date , String time) {
+    public Appointment(String patientName, String doctorName, String description, String gender, int age, String date, String time) {
         this.patientName = patientName;
         this.doctorName = doctorName;
         this.description = description;
@@ -51,7 +61,7 @@ public class Appointment {
         this.time = time;
     }
 
-    public Appointment(String patientName, String doctorName, String description, String gender, int age , String date , String time , String location) {
+    public Appointment(String patientName, String doctorName, String description, String gender, int age, String date, String time, String location) {
         this.patientName = patientName;
         this.doctorName = doctorName;
         this.description = description;
@@ -62,26 +72,26 @@ public class Appointment {
         this.location = location;
     }
 
-    @Column(name = "PATIENT_NAME")
-    private String patientName;
+    public static void main(String[] args) {
+        Appointment appointment1 = new Appointment("ap1", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment2 = new Appointment("ap2", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment7 = new Appointment("ap3", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment3 = new Appointment("ap3", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment4 = new Appointment("ap4", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment5 = new Appointment("ap5", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment6 = new Appointment("ap6", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
+        Appointment appointment = new Appointment();
+        appointment.postAppointmentToBackend(appointment1);
+        appointment.postAppointmentToBackend(appointment2);
+        appointment.postAppointmentToBackend(appointment3);
+        appointment.postAppointmentToBackend(appointment4);
+        appointment.postAppointmentToBackend(appointment5);
+        appointment.postAppointmentToBackend(appointment6);
+        appointment.postAppointmentToBackend(appointment7);
 
-    @Column(name = "DOCTOR_NAME")
-    private String doctorName;
 
-    @Column(name = "DESCRIPTION")
-    private String description;
-
-    @Column(name =  "GENDER")
-    private String gender;
-
-    @Column(name =  "DATE")
-    private String date;
-
-    @Column(name =  "TIME")
-    private String time;
-
-    @Column(name =  "LOCATION")
-    private String location;
+        System.out.println(appointment.getAppointmentsByDoctorName("Doctor"));
+    }
 
     public String getDate() {
         return date;
@@ -115,10 +125,6 @@ public class Appointment {
         this.age = age;
     }
 
-    @Column(name =  "AGE")
-    private  int age;
-
-
     public String getLocation() {
         return location;
     }
@@ -151,15 +157,14 @@ public class Appointment {
         this.patientName = patientName;
     }
 
-
-    public void postAppointmentToBackend(Appointment appointment){
+    public void postAppointmentToBackend(Appointment appointment) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start a transaction
             transaction = session.beginTransaction();
             // save the student objects
             session.persist(appointment);
-            int id  = session.createQuery("select max(A.id) from Appointment A", int.class).getSingleResult();
+            int id = session.createQuery("select max(A.id) from Appointment A", int.class).getSingleResult();
             appointment.setId(id);
             // commit transaction
             transaction.commit();
@@ -171,12 +176,11 @@ public class Appointment {
         }
     }
 
-    public Appointment fullCopy(){
+    public Appointment fullCopy() {
         Appointment n_appointment = new Appointment(this);
         n_appointment.setId(this.getId());
         return n_appointment;
     }
-
 
     public int getId() {
         return id;
@@ -204,6 +208,7 @@ public class Appointment {
         }
         return persistentAppointment;
     }
+
     public void updateAppointmentInBackend(Appointment updatedAppointment) {
         // Retrieve the existing appointment from the backend using its unique identifier
         Appointment persistentAppointment = retrieveAppointmentFromBackend(updatedAppointment.getId());
@@ -239,17 +244,15 @@ public class Appointment {
         }
     }
 
-
-
-    public CustomSet<Appointment> getAppointmentsFromBackend(){
+    public CustomSet<Appointment> getAppointmentsFromBackend() {
         CustomSet<Appointment> appointmentSet = new CustomSet<>();
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List< Appointment > students = session.createQuery("from Appointment ", Appointment.class).list();
-            students.forEach(student ->{
+            List<Appointment> students = session.createQuery("from Appointment ", Appointment.class).list();
+            students.forEach(student -> {
                 appointmentSet.add(student);
             });
-            System.out.println( "Worker Size : " + appointmentSet.size());
+            System.out.println("Worker Size : " + appointmentSet.size());
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -257,27 +260,6 @@ public class Appointment {
             e.printStackTrace();
         }
         return appointmentSet;
-    }
-
-    public static void main(String[] args) {
-        Appointment appointment1 = new Appointment("ap1", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
-        Appointment appointment2 = new Appointment("ap2", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
-        Appointment appointment7 = new Appointment("ap3", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
-        Appointment appointment3 = new Appointment("ap3", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
-        Appointment appointment4 = new Appointment("ap4", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
-        Appointment appointment5 = new Appointment("ap5", "Brown", "Description", "Male", 30, "2023-05-25", "10:00");
-        Appointment appointment6 = new Appointment("ap6", "Doctor", "Description", "Male", 30, "2023-05-25", "10:00");
-        Appointment appointment = new Appointment();
-        appointment.postAppointmentToBackend(appointment1);
-        appointment.postAppointmentToBackend(appointment2);
-        appointment.postAppointmentToBackend(appointment3);
-        appointment.postAppointmentToBackend(appointment4);
-        appointment.postAppointmentToBackend(appointment5);
-        appointment.postAppointmentToBackend(appointment6);
-        appointment.postAppointmentToBackend(appointment7);
-
-
-        System.out.println(appointment.getAppointmentsByDoctorName("Doctor"));
     }
 
     public void deleteAppointmentFromBackend(Appointment appointment) {
@@ -324,7 +306,6 @@ public class Appointment {
                 ", doctorName='" + doctorName + '\'' +
                 '}';
     }
-
 
 
 }

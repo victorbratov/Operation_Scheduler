@@ -22,6 +22,7 @@ public class AddAppointment {
     Appointment appointmentHelper = new Appointment();
     Appointment appointment;
     String formattedDate;
+    CustomAlert alert = new CustomAlert();
 
     public Appointment getAppointmentHelper() {
         return appointmentHelper;
@@ -47,10 +48,7 @@ public class AddAppointment {
         this.alert = alert;
     }
 
-    CustomAlert alert = new CustomAlert();
-
-
-    public void onChoosing(ComboBox timeBox , Worker worker ,DatePicker datePicker , DateTimeFormatter formatter ){
+    public void onChoosing(ComboBox timeBox, Worker worker, DatePicker datePicker, DateTimeFormatter formatter) {
         Set<String> timeSet = new HashSet<>();
         timeSet.add("10:00");
         timeSet.add("10:30");
@@ -60,7 +58,7 @@ public class AddAppointment {
         timeSet.add("12:30");
         timeSet.add("13:00");
         timeBox.getItems().clear();
-        String selectedDoctor  =  worker.getName();
+        String selectedDoctor = worker.getName();
         if (selectedDoctor != null && datePicker.getValue() != null) {
             formattedDate = datePicker.getValue().format(formatter).toString();
 
@@ -69,7 +67,7 @@ public class AddAppointment {
 
             Set<Appointment> allAppointments = appointmentHelper.getAppointmentsByDoctorName(selectedDoctor).toSet();
             for (Appointment appointment : allAppointments) {
-                if(formattedDate.equals(appointment.getDate())){
+                if (formattedDate.equals(appointment.getDate())) {
                     timeSet.remove(appointment.getTime());
                 }
             }
@@ -78,9 +76,7 @@ public class AddAppointment {
     }
 
 
-
-
-    public void addAppointmentModal(TableView tableView , FilteredList<Appointment> sortedAppointments, ObservableList<Appointment> appointments , Worker worker) {
+    public void addAppointmentModal(TableView tableView, FilteredList<Appointment> sortedAppointments, ObservableList<Appointment> appointments, Worker worker) {
         final FilteredList<Appointment>[] updatedAppointments = new FilteredList[]{sortedAppointments};
 
         // Create a modal dialog`
@@ -124,7 +120,7 @@ public class AddAppointment {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        onChoosing(timeBox , worker, datePicker , formatter);
+        onChoosing(timeBox, worker, datePicker, formatter);
 
 
         // Enable/Disable save button depending on the input fields' values
@@ -164,11 +160,11 @@ public class AddAppointment {
 
 
         datePicker.setOnAction(event -> {
-            onChoosing(timeBox , worker, datePicker , formatter);
+            onChoosing(timeBox, worker, datePicker, formatter);
         });
 
         timeBox.setOnAction(event -> {
-            onChoosing(timeBox , worker, datePicker , formatter);
+            onChoosing(timeBox, worker, datePicker, formatter);
         });
 
 
@@ -185,7 +181,7 @@ public class AddAppointment {
             // ...
 
             // Create the appointment object
-            appointment = new Appointment(textField1.getText() , worker.getName() , textField3.getText() , genderComboBox.getValue() , Integer.parseInt(String.valueOf(textField2.getText())) , datePicker.getValue().toString() ,timeBox.getValue().toString());
+            appointment = new Appointment(textField1.getText(), worker.getName(), textField3.getText(), genderComboBox.getValue(), Integer.parseInt(String.valueOf(textField2.getText())), datePicker.getValue().toString(), timeBox.getValue().toString());
 
             // Perform the save action or further processing
 //            System.out.println("Appointment details:");
@@ -196,29 +192,23 @@ public class AddAppointment {
 //            System.out.println("Gender: " + appointment.getGender());
 
 
-
-
-
-            if(textField1.getText().isEmpty() || textField2.getText().isEmpty() || textField3.getText().isEmpty() || timeBox.getValue() ==null || datePicker.getValue() == null){
-                alert.showAlert("Invalid Inputs" , "Enter all Credentials to continue");
+            if (textField1.getText().isEmpty() || textField2.getText().isEmpty() || textField3.getText().isEmpty() || timeBox.getValue() == null || datePicker.getValue() == null) {
+                alert.showAlert("Invalid Inputs", "Enter all Credentials to continue");
                 dialog.close();
-            }
-
-            else {
+            } else {
                 try {
-                        int age  = Integer.parseInt(textField2.getText());
-                        appointment = new Appointment(textField1.getText() , worker.getName() , textField3.getText() , genderComboBox.getValue() , age , datePicker.getValue().toString() ,timeBox.getValue().toString() , worker.getLocation());
-                        appointment.postAppointmentToBackend(appointment);
-                        appointments.add(appointment);
-                        updatedAppointments[0] = new FilteredList<>(FXCollections.observableArrayList(appointments));
-                        tableView.setItems(updatedAppointments[0]);
-                        tableView.refresh();
-                        dialog.close();
-                    }
-                    catch (Exception e ){
-                        alert.showAlert("Error" , "Invalid Age");
-                        dialog.close();
-                    }
+                    int age = Integer.parseInt(textField2.getText());
+                    appointment = new Appointment(textField1.getText(), worker.getName(), textField3.getText(), genderComboBox.getValue(), age, datePicker.getValue().toString(), timeBox.getValue().toString(), worker.getLocation());
+                    appointment.postAppointmentToBackend(appointment);
+                    appointments.add(appointment);
+                    updatedAppointments[0] = new FilteredList<>(FXCollections.observableArrayList(appointments));
+                    tableView.setItems(updatedAppointments[0]);
+                    tableView.refresh();
+                    dialog.close();
+                } catch (Exception e) {
+                    alert.showAlert("Error", "Invalid Age");
+                    dialog.close();
+                }
 
             }
 
@@ -234,7 +224,7 @@ public class AddAppointment {
         dialog.showAndWait();
     }
 
-    public Appointment getAppointment(){
+    public Appointment getAppointment() {
         return appointment;
     }
 }

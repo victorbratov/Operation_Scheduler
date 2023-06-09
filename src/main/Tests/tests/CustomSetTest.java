@@ -1,4 +1,4 @@
-package com.example.op_sch.tests;
+package tests;
 
 import com.example.op_sch.dataStructures.CustomSet;
 import org.junit.Before;
@@ -68,9 +68,6 @@ public class CustomSetTest {
         assertTrue(unionSet.contains("B"));
         assertTrue(unionSet.contains("C"));
     }
-
-
-
 
 
     @Test

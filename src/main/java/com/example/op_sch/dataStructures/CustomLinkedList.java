@@ -10,10 +10,9 @@ public class CustomLinkedList<T> {
         this.size = 0;
     }
 
-    public int getSize(){
+    public int getSize() {
         return size;
     }
-
 
 
     public void insertFirst(T val) {

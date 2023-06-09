@@ -1,14 +1,19 @@
 package com.example.op_sch.professionals;
 
+import com.example.op_sch.HibernateUtil;
 import com.example.op_sch.dataStructures.CustomSet;
 import com.example.op_sch.patients.Appointment;
-import com.example.op_sch.HibernateUtil;
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -31,34 +36,6 @@ public class Worker {
 
     @Column(name = "Location")
     private String location;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 
     public Worker() {
     }
@@ -99,19 +76,6 @@ public class Worker {
         return null;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public String getPassword() {
-        return password;
-    }
-
     public static CustomSet<Worker> getWorkersFromBackend() {
         CustomSet<Worker> workerSet = new CustomSet<>();
         Transaction transaction = null;
@@ -133,7 +97,46 @@ public class Worker {
 
     }
 
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public void postWorkerToBackend(Worker worker) {
         Transaction transaction = null;

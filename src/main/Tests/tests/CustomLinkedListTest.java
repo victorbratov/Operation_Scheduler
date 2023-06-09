@@ -1,11 +1,10 @@
-package com.example.op_sch.tests;
+package tests;
 
 import com.example.op_sch.dataStructures.CustomLinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CustomLinkedListTest {
 

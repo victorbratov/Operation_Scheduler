@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Dashboard implements Screen {
 
-    private  Node root;
+    private Node root;
 
     @Override
     public String id() {

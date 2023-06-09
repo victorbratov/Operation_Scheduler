@@ -10,6 +10,7 @@ import java.io.IOException;
 public class RegisterScreen implements Screen {
 
     private Node root;
+
     @Override
     public String id() {
         return "REGISTER_SCREEN";
