@@ -183,7 +183,7 @@ public class AddAppointment {
             else {
                 try {
                         int age  = Integer.parseInt(textField2.getText());
-                        Appointment appointment = new Appointment(textField1.getText() , worker.getName() , textField3.getText() , genderComboBox.getValue() , age , datePicker.getValue().toString() ,timeBox.getValue().toString() , worker.getLocation());
+                        appointment = new Appointment(textField1.getText() , worker.getName() , textField3.getText() , genderComboBox.getValue() , age , datePicker.getValue().toString() ,timeBox.getValue().toString() , worker.getLocation());
                         appointment.postAppointmentToBackend(appointment);
                         appointments.add(appointment);
                         updatedAppointments[0] = new FilteredList<>(FXCollections.observableArrayList(appointments));
