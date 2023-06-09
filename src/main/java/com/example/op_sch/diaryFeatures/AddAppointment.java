@@ -23,6 +23,30 @@ public class AddAppointment {
     Appointment appointment;
     String formattedDate;
 
+    public Appointment getAppointmentHelper() {
+        return appointmentHelper;
+    }
+
+    public void setAppointmentHelper(Appointment appointmentHelper) {
+        this.appointmentHelper = appointmentHelper;
+    }
+
+    public String getFormattedDate() {
+        return formattedDate;
+    }
+
+    public void setFormattedDate(String formattedDate) {
+        this.formattedDate = formattedDate;
+    }
+
+    public CustomAlert getAlert() {
+        return alert;
+    }
+
+    public void setAlert(CustomAlert alert) {
+        this.alert = alert;
+    }
+
     CustomAlert alert = new CustomAlert();
 
 

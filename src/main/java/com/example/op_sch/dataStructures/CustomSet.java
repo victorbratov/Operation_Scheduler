@@ -1,5 +1,6 @@
 package com.example.op_sch.dataStructures;
 
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -90,14 +91,21 @@ public class CustomSet<T> {
     }
 
     public void insert(T val, int index) {
-        if (head == null) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Invalid index");
+        }
+
+        if (index == 0) {
             add(val);
             return;
         }
-        LinkedListNode<T> temp = head;
-        for (int i = 1; i < index; i++) {
-            temp = temp.next;
+
+        if (index == size) {
+            add(val);
+            return;
         }
+
+        LinkedListNode<T> temp = getNode(index - 1);
         LinkedListNode<T> node = new LinkedListNode<>(val, temp.next);
         temp.next = node;
         size++;
@@ -154,7 +162,7 @@ public class CustomSet<T> {
 
     // Get an array of the elements in the set
     public T[] toArray() {
-        T[] result = (T[]) new Object[size];
+        T[] result = (T[]) Array.newInstance(Object.class, size);
         LinkedListNode<T> current = head;
         int i = 0;
         while (current != null) {

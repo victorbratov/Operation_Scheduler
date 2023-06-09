@@ -27,8 +27,6 @@ public class TaskList {
     @Column(name = "ID")
     private int id;
 
-
-
     @Column(name = "description")
     private String description;
 
