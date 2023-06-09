@@ -78,7 +78,6 @@ public class DashBoardController {
     private Set<MachineBooking>  machineBookingSet = machineBookingHelper.getMachinesByDoctorName(doctor.getName());
 
 
-    MachineBooking machineBookingHelper = new MachineBooking();
     private ObservableList<MachineBooking> machineBookings = FXCollections.observableArrayList();
 
 
@@ -404,7 +403,7 @@ public class DashBoardController {
 
         // Add the columns to the table view
         tableView.getColumns().clear();
-        tableView.getColumns().addAll(patientNameColumn, dateColumn, timeColumn, endTimeColumn, descriptionColumn, editColumn , deleteColumn , machineColumn);
+        tableView.getColumns().addAll(patientNameColumn, dateColumn, timeColumn, locationCol, descriptionColumn, editColumn , deleteColumn , machineColumn);
         tableView.setItems(filteredAppointments);
 
     }
