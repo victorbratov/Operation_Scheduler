@@ -1,4 +1,4 @@
-package com.example.op_sch.tests;
+package tests;
 
 import com.example.op_sch.professionals.Worker;
 import org.junit.Test;

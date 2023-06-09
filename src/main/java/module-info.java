@@ -28,6 +28,4 @@ module com.example.op_sch {
     opens com.example.op_sch.generalClasses to javafx.fxml, javafx.graphics, org.hibernate.orm.core;
     exports com.example.op_sch.authentication;
     opens com.example.op_sch.authentication to javafx.fxml, javafx.graphics, org.hibernate.orm.core;
-    exports com.example.op_sch.tests;
-    opens com.example.op_sch.tests to javafx.fxml, javafx.graphics, org.hibernate.orm.core;
 }

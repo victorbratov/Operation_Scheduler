@@ -167,10 +167,11 @@ public class TaskList {
         // Set the data to the TableView
 
         taskTable.setItems(tasks);
+        taskTable.getColumns().clear();
         taskTable.getColumns().addAll(taskNameColumn, priorityColumn, deleteColumn);
     }
 
-    public void addTasks(Worker worker, TableView taskTable, ObservableList<TaskList> tasks) {
+    public void addTasks(Worker worker, TableView taskTable, ObservableList<TaskList> tasks, Set<TaskList> taskSet) {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Add a Task");
         dialog.setHeaderText("");
@@ -205,6 +206,7 @@ public class TaskList {
                 TaskList taskList = new TaskList(textField1.getText(), priorityBox.getValue().toString(), worker.getName());
                 postTaskToBackend(taskList);
                 taskTable.getItems().add(taskList);
+                taskSet.add(taskList);
                 Comparator<TaskList> priorityComparator = Comparator.comparing(TaskList::getPriority);
                 tasks.sort(priorityComparator);
 

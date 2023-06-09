@@ -153,7 +153,8 @@ public class DashBoardController {
 
     public void addToTask() {
         TaskList taskList = new TaskList();
-        taskList.addTasks(doctor, taskTable, tasks);
+        taskList.addTasks(doctor, taskTable, tasks, taskSet);
+        taskTableCreation();
     }
 
     public void taskTableCreation() {
