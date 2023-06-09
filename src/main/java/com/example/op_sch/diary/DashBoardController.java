@@ -1,10 +1,10 @@
 package com.example.op_sch.diary;
 
 
-import com.example.op_sch.*;
+import com.example.op_sch.EntryPoint;
+import com.example.op_sch.customComponents.CustomAlert;
 import com.example.op_sch.dataStructures.UndoStack;
 import com.example.op_sch.dataStructures.UndoStackNode;
-import com.example.op_sch.customComponents.CustomAlert;
 import com.example.op_sch.diaryFeatures.*;
 import com.example.op_sch.generalClasses.Action;
 import com.example.op_sch.patients.Appointment;
@@ -24,11 +24,9 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.*;
@@ -66,6 +64,9 @@ public class DashBoardController {
     @FXML
     Button undoButton;
 
+    @FXML
+    Button redoButton;
+
 
     private static Worker doctor;
     MachineBooking machineBookingHelper = new MachineBooking();
@@ -77,13 +78,12 @@ public class DashBoardController {
 
     private Set<MachineBooking>  machineBookingSet = machineBookingHelper.getMachinesByDoctorName(doctor.getName());
 
-
-    MachineBooking machineBookingHelper = new MachineBooking();
     private ObservableList<MachineBooking> machineBookings = FXCollections.observableArrayList();
 
 
     private FilteredList<Appointment> filteredAppointments;
     private UndoStack undoStack;
+    private UndoStack redoStack;
 
     public DashBoardController() {
 
@@ -108,6 +108,7 @@ public class DashBoardController {
         YearMonth currentMonth = YearMonth.now();
         createCalendarView(currentMonth);
         undoStack = new UndoStack();
+        redoStack = new UndoStack();
         machineTableCreation();
     }
 
@@ -124,11 +125,44 @@ public class DashBoardController {
             UndoStackNode node = undoStack.pop();
             Appointment appointment = node.getAppointment();
             switch (node.getAction()) {
-                case ADD -> appointment.deleteAppointmentFromBackend(appointment);
-                case EDIT -> appointment.updateAppointmentInBackend(appointment);
+                case ADD -> {
+                    appointment.deleteAppointmentFromBackend(appointment);
+                    redoStack.push(appointment, Action.DELETE);
+                }
+                case EDIT -> {
+                    redoStack.push(appointment.retrieveAppointmentFromBackend(appointment.getId()), Action.EDIT);
+                    appointment.updateAppointmentInBackend(appointment);
+                }
                 case DELETE -> {
                     Appointment n_appointment = new Appointment(appointment);
                     appointment.postAppointmentToBackend(n_appointment);
+                    redoStack.push(n_appointment, Action.ADD);
+                }
+            }
+            YearMonth currentMonth = YearMonth.now();
+            createCalendarView(currentMonth);
+            appointmentTableCreation();
+            tableRefresh();
+        }
+    }
+
+    public void redo() {
+        if(!redoStack.isEmpty()){
+            UndoStackNode node = redoStack.pop();
+            Appointment appointment = node.getAppointment();
+            switch (node.getAction()) {
+                case ADD -> {
+                    appointment.deleteAppointmentFromBackend(appointment);
+                    undoStack.push(appointment, Action.DELETE);
+                }
+                case EDIT -> {
+                    undoStack.push(appointment.retrieveAppointmentFromBackend(appointment.getId()), Action.EDIT);
+                    appointment.updateAppointmentInBackend(appointment);
+                }
+                case DELETE -> {
+                    Appointment n_appointment = new Appointment(appointment);
+                    appointment.postAppointmentToBackend(n_appointment);
+                    undoStack.push(n_appointment, Action.ADD);
                 }
             }
             YearMonth currentMonth = YearMonth.now();
@@ -396,15 +430,17 @@ public class DashBoardController {
             }
         });
 
-        appointments.addListener((ListChangeListener.Change<? extends Appointment> change) -> {
-            filteredAppointments.setPredicate(appointment -> true); // Refresh the predicate
-        });
+        if(!appointments.isEmpty()){
+            appointments.addListener((ListChangeListener.Change<? extends Appointment> change) -> {
+                filteredAppointments.setPredicate(appointment -> true);// Refresh the predicate
+            });
+        }
 
 
 
         // Add the columns to the table view
         tableView.getColumns().clear();
-        tableView.getColumns().addAll(patientNameColumn, dateColumn, timeColumn, endTimeColumn, descriptionColumn, editColumn , deleteColumn , machineColumn);
+        tableView.getColumns().addAll(patientNameColumn, dateColumn, timeColumn, descriptionColumn, editColumn , deleteColumn , machineColumn);
         tableView.setItems(filteredAppointments);
 
     }

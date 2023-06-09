@@ -33,6 +33,7 @@ public class Appointment {
         this.gender = appointment.getGender();
         this.doctorName = appointment.getDoctorName();
         this.age = appointment.getAge();
+        this.location = appointment.getLocation();
         // Copy any other properties as needed
     }
 
