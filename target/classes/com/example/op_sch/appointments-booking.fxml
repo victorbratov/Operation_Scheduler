@@ -17,7 +17,7 @@
    <children>
       <ImageView fitHeight="773.0" fitWidth="1313.0" layoutY="-2.0" opacity="0.52">
          <image>
-            <Image url="https://i.ibb.co/KF3TrD7/bg1.jpg" />
+            <Image url="@assets/bg1.jpg" />
          </image>
       </ImageView>
       <TextField fx:id="patientName" layoutX="772.0" layoutY="201.0" prefHeight="26.0" prefWidth="245.0" />
@@ -75,7 +75,7 @@
       <ComboBox fx:id="timeBox" layoutX="780.0" layoutY="527.0" prefWidth="150.0" promptText="Choose time" />
       <ImageView fitHeight="778.0" fitWidth="430.0" layoutX="-6.0" layoutY="-3.0" opacity="0.52" style="-fx-blend-mode: multiply;">
          <image>
-            <Image url="https://i.ibb.co/4gP0r61/stethescope.jpg" />
+            <Image url="@assets/stethescope.jpeg" />
          </image>
       </ImageView>
       <Button layoutX="1160.0" layoutY="33.0" mnemonicParsing="false" onAction="#goBack" prefHeight="40.0" prefWidth="135.0" style="-fx-background-radius: 20; -fx-background-color: black;" text="Go Back" textFill="WHITE">

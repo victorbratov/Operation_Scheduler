@@ -11,7 +11,7 @@
 <AnchorPane prefHeight="749.0" prefWidth="1311.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.op_sch.diary.HomeScreenController">
    <ImageView fitHeight="754.0" fitWidth="1313.0" layoutY="-2.0" opacity="0.52">
       <image>
-         <Image url="https://i.ibb.co/r42nSv1/bg2.jpg" />
+         <Image url="@assets/bg2.jpeg" />
       </image>
    </ImageView>
    <Button id="login_button" fx:id="login_button" layoutX="817.0" layoutY="293.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="60.0" prefWidth="320.0" style="-fx-background-radius: 30; -fx-background-color: black;" text="Professional Login" textAlignment="CENTER" textFill="#eee7e7">
@@ -44,7 +44,7 @@
    </Label>
    <ImageView fitHeight="753.0" fitWidth="427.0" opacity="0.52" style="-fx-blend-mode: multiply;">
       <image>
-         <Image url="https://i.ibb.co/4gP0r61/stethescope.jpg" />
+         <Image url="@assets/stethescope.jpeg" />
       </image>
    </ImageView>
    <Button id="login_button" layoutX="1139.0" layoutY="694.0" mnemonicParsing="false" onAction="#exitSystem" prefHeight="45.0" prefWidth="169.0" style="-fx-background-radius: 30; -fx-background-color: black;" text="Exit" textAlignment="CENTER" textFill="#eee7e7">
